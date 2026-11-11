@@ -828,3 +828,66 @@ body {
     #workspaceSettings > summary { align-items: flex-start; }
     #workspaceSettings > summary > .muted { overflow-wrap: anywhere; }
 }
+
+/* Paginated history uses editorial date dividers and readable record metadata. */
+#workspaceHistory .history { gap: 8px; }
+#workspaceHistory .history-date-heading {
+    margin: 18px 0 4px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #d7d8ce;
+    color: #665b46;
+    font: 500 .74rem "DM Mono", Consolas, monospace;
+    letter-spacing: .06em;
+}
+#workspaceHistory .history-date-heading:first-child { margin-top: 0; }
+#workspaceHistory .history-item {
+    background: #fffefa;
+    border: 1px solid #dedfd7;
+    padding: 12px 15px;
+    gap: 16px;
+}
+#workspaceHistory .history-open {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+#workspaceHistory .history-description {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+}
+#workspaceHistory .history-description strong {
+    display: block;
+    font-size: .88rem;
+    line-height: 1.4;
+}
+#workspaceHistory .history-meta {
+    display: block;
+    color: #68716c;
+    font-size: .76rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+#workspaceHistory .history-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #d8d9d2;
+    font: 400 .76rem "DM Mono", Consolas, monospace;
+}
+#workspaceHistory .history-pagination[hidden] { display: none; }
+#workspaceHistory .history-pagination .btn { min-height: 42px; }
+@media screen and (max-width: 600px) {
+    #workspaceHistory .history-item { padding: 12px; }
+    #workspaceHistory .history-open { gap: 8px; }
+    #workspaceHistory .history-description { flex-basis: 100%; }
+    #workspaceHistory .history-pagination { gap: 8px; }
+    #workspaceHistory .history-pagination .btn { padding-inline: 10px; }
+}
