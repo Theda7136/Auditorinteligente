@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisión de contratos</title>
-    <link rel="stylesheet" href="css/app.css?v=ui-v7">
+    <link rel="stylesheet" href="css/app.css?v=ui-v8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"
         integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8p5o2ATD5ZLUQGFe8cTN5g8Y0cqXx6V6Jmt0MpFRQJvA4Bsk0A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -20,6 +20,18 @@
 <body>
     <input id="hiddenFileInput" class="hidden" type="file" accept=".txt,.pdf,.docx">
     <div class="wrap">
+        <nav class="workspace-sidebar no-print" aria-label="Navegación principal">
+            <a class="workspace-brand" href="#workspaceAudit" aria-label="Auditor Inteligente, ir a auditoría">
+                <span class="brand-mark" aria-hidden="true">AI</span>
+                <span><strong>Auditor</strong><small>INTELIGENTE</small></span>
+            </a>
+            <span class="sidebar-label">ESPACIO DE TRABAJO</span>
+            <a class="sidebar-link is-current" href="#workspaceAudit"><span aria-hidden="true">▤</span> Auditoría</a>
+            <a class="sidebar-link" href="#workspaceHistory"><span aria-hidden="true">◷</span> Historial</a>
+            <a class="sidebar-link" href="#workspaceSettings"><span aria-hidden="true">⚙</span> Configuración</a>
+            <a class="sidebar-link" href="#workspaceAccount"><span aria-hidden="true">◉</span> Mi cuenta</a>
+            <p class="sidebar-footnote">Análisis de contratos con trazabilidad.</p>
+        </nav>
         <header class="topbar">
             <div>
                 <h1>
@@ -27,7 +39,7 @@
                         aria-hidden="true">
                         <path d="M8 7h8M8 11h8M8 15h5M6 3h8l4 4v14H6z" />
                     </svg>
-                    Revisión de contratos
+                    Auditoría de contratos
                 </h1>
                 <p>Dictamen de riesgos para negociar. No sustituye a un abogado.</p>
             </div>
@@ -39,36 +51,7 @@
 
         <p id="appNotice" class="notice" hidden></p>
 
-        <section class="card account-card no-print" aria-labelledby="accountHeading">
-            <div class="row">
-                <h2 id="accountHeading">Tu cuenta</h2>
-                <span id="accountStatus" class="muted">Modo invitado</span>
-            </div>
-            <div id="authForms" class="fields">
-                <div>
-                    <label for="authEmail">Correo electrónico</label>
-                    <input id="authEmail" type="email" autocomplete="email" maxlength="254" placeholder="tu@correo.com">
-                </div>
-                <div>
-                    <label for="authPassword">Contraseña</label>
-                    <input id="authPassword" type="password" autocomplete="current-password" minlength="10"
-                        maxlength="128" placeholder="Mínimo 10 caracteres">
-                </div>
-                <div class="account-actions">
-                    <button id="loginBtn" class="btn accent" type="button">Iniciar sesión</button>
-                    <button id="registerBtn" class="btn" type="button">Crear cuenta</button>
-                </div>
-            </div>
-            <div id="accountSession" hidden>
-                <p class="muted">Sesión iniciada como <strong id="accountEmail"></strong>. Tu historial se guarda en
-                    esta cuenta.</p>
-                <button id="logoutBtn" class="btn ghost" type="button">Cerrar sesión</button>
-            </div>
-            <p id="authMessage" class="muted" role="status">Puedes analizar sin cuenta. Inicia sesión para guardar tu
-                historial de forma privada en este servidor.</p>
-        </section>
-
-        <div class="layout">
+        <div id="workspaceAudit" class="layout">
             <div class="stack">
                 <section class="card">
                     <div class="row">
@@ -137,7 +120,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                 </section>
 
-                <details class="card no-print connection-card">
+                <details id="workspaceSettings" class="card no-print connection-card">
                     <summary>
                         <span>Conexión y prioridades</span>
                         <span class="muted"><span id="configStatusText">Modo local</span> <span class="chevron"
@@ -198,7 +181,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                 </details>
 
-                <section class="card no-print">
+                <section id="workspaceHistory" class="card no-print">
                     <div class="row">
                         <h2>Historial <span id="historyCountBadge" class="count">0</span></h2>
                         <button id="clearHistoryBtn" class="btn danger" type="button">Limpiar historial</button>
@@ -273,6 +256,35 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                 </div>
             </aside>
         </div>
+        <section id="workspaceAccount" class="card account-card no-print" aria-labelledby="accountHeading">
+            <div class="row">
+                <h2 id="accountHeading">Tu cuenta</h2>
+                <span id="accountStatus" class="muted">Modo invitado</span>
+            </div>
+            <div id="authForms" class="fields">
+                <div>
+                    <label for="authEmail">Correo electrónico</label>
+                    <input id="authEmail" type="email" autocomplete="email" maxlength="254" placeholder="tu@correo.com">
+                </div>
+                <div>
+                    <label for="authPassword">Contraseña</label>
+                    <input id="authPassword" type="password" autocomplete="current-password" minlength="10"
+                        maxlength="128" placeholder="Mínimo 10 caracteres">
+                </div>
+                <div class="account-actions">
+                    <button id="loginBtn" class="btn accent" type="button">Iniciar sesión</button>
+                    <button id="registerBtn" class="btn" type="button">Crear cuenta</button>
+                </div>
+            </div>
+            <div id="accountSession" hidden>
+                <p class="muted">Sesión iniciada como <strong id="accountEmail"></strong>. Tu historial se guarda en
+                    esta cuenta.</p>
+                <button id="logoutBtn" class="btn ghost" type="button">Cerrar sesión</button>
+            </div>
+            <p id="authMessage" class="muted" role="status">Puedes analizar sin cuenta. Inicia sesión para guardar tu
+                historial de forma privada en este servidor.</p>
+        </section>
+
     </div>
 
     <dialog id="consentDialog" class="dialog">
