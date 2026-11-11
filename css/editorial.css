@@ -405,3 +405,40 @@ body {
 }
 .legal-report .recommendation-reference:hover { color: #2d342e; }
 .legal-report .recommendation-reference:focus-visible { outline: 2px solid #8b7754; outline-offset: 3px; }
+
+/* Accessibility pass: consistent keyboard focus and readable interface metadata. */
+:where(button, a, input, select, textarea, summary):focus-visible {
+    outline: 2px solid #8a7147;
+    outline-offset: 3px;
+}
+@media screen {
+    .workspace-brand small,
+    .sidebar-label,
+    .legal-report .report-section-label,
+    .legal-report .recommendation-label {
+        font-size: max(.75rem, 12px);
+        line-height: 1.5;
+    }
+    .legal-report .finding-severity,
+    .legal-report .recommendation-number,
+    .badge, .badge.live {
+        font-size: max(.75rem, 12px);
+    }
+}
+@media screen and (max-width: 760px) {
+    .sidebar-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    .legal-report .finding-card {
+        min-height: 48px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
