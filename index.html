@@ -127,8 +127,8 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
 
             </div>
 
-            <aside class="card">
-                <div class="row">
+            <aside class="card legal-report" aria-label="Informe de auditoría">
+                <div class="row report-heading">
                     <h2>Dictamen</h2>
                     <span id="auditSourceTag" class="tag">Sin análisis</span>
                 </div>
@@ -138,6 +138,8 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     <p>Selecciona el tipo de contrato, revisa el texto y pulsa <strong>Analizar contrato</strong>. Aquí encontrarás los riesgos, las citas y las recomendaciones.</p>
                 </div>
                 <div id="resultsBody" hidden>
+                    <section class="report-section report-overview" aria-label="Evaluación general">
+                    <div class="report-section-label">01 / Evaluación general</div>
                     <div id="riskCard" class="risk-card" data-band="low">
                         <header>
                             <span class="muted">Puntuación de riesgo</span>
@@ -158,11 +160,13 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <div id="analysisDetailsText"></div>
                     </details>
                     <p id="truncationNote" class="notice warn" hidden></p>
+                    </section>
                     <section id="auditModePanel" class="recs" hidden>
                         <h3 id="auditModeTitle"></h3>
                         <p id="auditModeDescription" class="muted"></p>
                     </section>
-                    <section id="hybridPanel" class="recs" hidden>
+                    <section id="hybridPanel" class="recs report-section" hidden>
+                        <div class="report-section-label">02 / Contraste de motores</div>
                         <h3>Comparación de motores</h3>
                         <p class="muted">
                             Coincidencias y diferencias entre Gemini y el motor local.
@@ -176,15 +180,21 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <div id="hybridTabs" class="hybrid-tabs" role="tablist" aria-label="Origen de hallazgos"></div>
                         <div id="hybridFindings" class="alerts"></div>
                     </section>
+                    <section class="report-section report-findings">
+                    <div class="report-section-label">03 / Evidencia contractual</div>
                     <div class="row">
                         <h3>Hallazgos</h3>
                         <span id="alertsCountBadge" class="count">0</span>
                     </div>
                     <div id="alertsContainer" class="alerts"></div>
+                    </section>
+                    <section class="report-section report-recommendations">
+                    <div class="report-section-label">04 / Acciones sugeridas</div>
                     <div class="recs">
                         <h3>Recomendaciones</h3>
                         <ul id="recommendationsList"></ul>
                     </div>
+                    </section>
                     <p class="muted">Pulsa un hallazgo para localizar la cita en el texto. Esto no es un dictamen legal.
                     </p>
                     <div class="export-row">
