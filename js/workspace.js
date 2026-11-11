@@ -17,6 +17,9 @@
             else link.removeAttribute('aria-current');
         }
 
+        const retryPanel = document.getElementById('geminiRetryPanel');
+        if (retryPanel) retryPanel.classList.toggle('audit-only-hidden', selected !== 'audit');
+
         if (selected === 'settings') {
             document.getElementById('workspaceSettings').open = true;
         }
