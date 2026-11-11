@@ -727,7 +727,11 @@ if (rule.id === 'renewal') {
                 title: String(alert && alert.title || 'Hallazgo').slice(0, 180),
                 desc: String(alert && alert.desc || '').slice(0, 1200),
                 excerpt: String(alert && alert.excerpt || '').slice(0, 500),
-                anchor: String(alert && alert.anchor || '').slice(0, 180)
+                anchor: String(alert && alert.anchor || '').slice(0, 180),
+                recommendation: typeof alert?.recommendation === 'string'
+                    && Array.isArray(source.recommendations)
+                    && source.recommendations.includes(alert.recommendation)
+                    ? alert.recommendation.slice(0, 800) : undefined
             };
         }).filter(function (alert) { return alert.title; });
 
@@ -758,7 +762,13 @@ if (rule.id === 'renewal') {
                 || typeof alert.desc !== 'string' || typeof alert.excerpt !== 'string'
                 || !alert.excerpt.trim() || !text.includes(alert.excerpt)) throw new Error('Unverified quote');
         }
-        return { score: parsed.score, alerts: parsed.alerts.map(a => ({ ...a, evidenceStart: text.indexOf(a.excerpt), evidenceEnd: text.indexOf(a.excerpt) + a.excerpt.length })),
+        return { score: parsed.score, alerts: parsed.alerts.map(a => ({
+            ...a,
+            recommendation: typeof a.recommendation === 'string' && parsed.recommendations.includes(a.recommendation)
+                ? a.recommendation.slice(0, 800) : undefined,
+            evidenceStart: text.indexOf(a.excerpt),
+            evidenceEnd: text.indexOf(a.excerpt) + a.excerpt.length
+        })),
             recommendations: [...parsed.recommendations, 'Referencias jurídicas generadas por IA: pendientes de verificación de vigencia y aplicabilidad.'],
             scoring: { version: 'model-reported', note: 'Puntuación estimada por el modelo; no calibrada ni comparable con el índice local.' } };
     }
