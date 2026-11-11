@@ -213,7 +213,9 @@
 
         const list = $('recommendationsList');
         list.replaceChildren();
-        (data.recommendations || []).forEach(function (recommendation) {
+        (data.recommendations || []).filter(function (recommendation) {
+            return typeof recommendation === 'string' && !/^Respaldo local:/i.test(recommendation);
+        }).forEach(function (recommendation) {
             const item = document.createElement('li');
             item.textContent = recommendation;
             list.append(item);
@@ -648,7 +650,6 @@
                     result = engine.runLocalSimulation(fullText, prefs);
                     source = 'Simulación local (respaldo)';
                     result.provenance = { ...result.provenance, attemptedModel: request.model, fallbackReason: error.code || 'UNKNOWN', diagnostic: error.diagnostic };
-                    result.recommendations.unshift('Respaldo local: ' + error.code + '. ' + error.message);
                     if (!['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code)) {
                         showNotice('');
                     } else {
