@@ -608,3 +608,10 @@ details > summary:focus-visible {
 .recs { margin-top: 22px; }
 .recs li { padding: 10px 4px 10px 8px; line-height: 1.6; border-bottom: 1px solid #e5ebf1; }
 .recs li:last-child { border-bottom: 0; }
+
+/* Let findings expand naturally rather than trapping scrolling inside the dictamen. */
+#alertsContainer {
+    max-height: none;
+    overflow: visible;
+    align-content: start;
+}
