@@ -508,3 +508,37 @@ details > summary:focus-visible {
 @media print {
     .workspace-view[hidden] { display: none !important; }
 }
+
+/* Hybrid analysis comparison */
+#hybridPanel { background: #f8fafc; border: 1px solid #e1e8f0; }
+#hybridPanel > h3 { margin-bottom: 8px; }
+.hybrid-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin: 16px 0;
+}
+.hybrid-tab {
+    padding: 12px 8px;
+    border: 1px solid #d9e3ed;
+    border-radius: 10px;
+    background: #fff;
+    color: #41566d;
+    font: inherit;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.hybrid-tab:hover { border-color: #0e8276; }
+.hybrid-tab[aria-selected="true"] {
+    background: #e4f4ef;
+    border-color: #0e8276;
+    color: #075b52;
+}
+.hybrid-tab:focus-visible { outline: 2px solid #0e8276; outline-offset: 2px; }
+#hybridFindings .hybrid-group[hidden] { display: none !important; }
+.hybrid-empty { padding: 16px 0; text-align: center; }
+#hybridPanel .hybrid-group-title { display: none; }
+@media (max-width: 540px) {
+    .hybrid-tabs { grid-template-columns: 1fr; }
+}
