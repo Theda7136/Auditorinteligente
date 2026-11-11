@@ -773,6 +773,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 12px 0;
+    min-width: 0;
 }
 #workspaceHistory .history-open { flex: 1; min-width: 0; }
 #workspaceHistory .history-open strong {
@@ -800,22 +801,18 @@ body {
 #workspaceAccount .account-session {
     padding: 8px 0 22px;
 }
-@media screen and (max-width: 760px) {
-    #workspaceHistory .history-tools { grid-template-columns: 1fr; }
-    #workspaceHistory .history-item { align-items: start; }
-}
-
 /* Secondary views: let history scroll with the page, not inside a short viewport. */
 #workspaceHistory .history {
     max-height: none;
     overflow: visible;
     min-width: 0;
 }
-#workspaceHistory .history-item { min-width: 0; }
 #workspaceHistory .history-open { overflow: hidden; }
 #workspaceHistory .history-open > span:first-child { min-width: 0; }
 #workspaceHistory .history-item > .btn { min-height: 40px; }
 @media screen and (max-width: 760px) {
+    #workspaceHistory .history-tools { grid-template-columns: 1fr; }
+    #workspaceHistory .history-item { align-items: start; }
     .workspace-view,
     #workspaceHistory,
     #workspaceSettings,
