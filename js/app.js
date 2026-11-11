@@ -668,8 +668,76 @@
             remove.textContent = 'Borrar';
             remove.setAttribute('aria-label', 'Borrar ' + (record.title || 'Contrato') + ' del ' + (record.date || 'historial'));
             remove.addEventListener('click', function () { deleteAudit(record.id); });
-            row.append(open, remove);
+            const rename = document.createElement('button');
+            rename.type = 'button';
+            rename.className = 'btn tiny ghost history-rename';
+            rename.textContent = 'Renombrar';
+            rename.setAttribute('aria-label', 'Renombrar ' + (record.title || 'Contrato'));
+            rename.addEventListener('click', function () { editAuditTitle(record, row); });
+            row.append(open, rename, remove);
             list.append(row);
+        });
+    }
+
+    function editAuditTitle(record, row) {
+        if (row.querySelector('.history-title-editor')) return;
+
+        const form = document.createElement('form');
+        form.className = 'history-title-editor';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 80;
+        input.required = true;
+        input.value = record.title || 'Contrato';
+        input.setAttribute('aria-label', 'Nuevo nombre del análisis');
+        const save = document.createElement('button');
+        save.type = 'submit';
+        save.className = 'btn tiny';
+        save.textContent = 'Guardar';
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'btn tiny secondary';
+        cancel.textContent = 'Cancelar';
+        cancel.addEventListener('click', function () { form.remove(); });
+        form.append(input, save, cancel);
+        row.after(form);
+        input.focus();
+        input.select();
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const title = input.value.trim();
+            if (!title || title.length > 80 || /[\\r\\n\\u0000-\\u001f]/.test(title)) {
+                showNotice('Escribe un nombre válido de hasta 80 caracteres.', 'warn');
+                return;
+            }
+            if (title === record.title) {
+                form.remove();
+                return;
+            }
+            save.disabled = true;
+            try {
+                if (currentUser) {
+                    const response = await fetch('/api/history/' + encodeURIComponent(record.id), {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfTokenValue },
+                        body: JSON.stringify({ title })
+                    });
+                    if (!response.ok) throw new Error('No se pudo guardar el nuevo nombre en tu cuenta.');
+                    await refreshServerHistory();
+                } else {
+                    const history = readHistory();
+                    const updated = history.map(function (entry) {
+                        return entry.id === record.id ? Object.assign({}, entry, { title }) : entry;
+                    });
+                    if (!persistHistory(updated).ok) throw new Error('No se pudo guardar el nombre en este navegador.');
+                    renderHistory();
+                }
+                showNotice('Nombre del análisis actualizado.', 'info');
+            } catch (error) {
+                save.disabled = false;
+                showNotice(error.message, 'bad');
+            }
         });
     }
 
