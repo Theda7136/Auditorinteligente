@@ -606,7 +606,24 @@
             list.append(empty);
             return;
         }
-        history.forEach(function (item) {
+        const query = ($('historySearch')?.value || '').trim().toLocaleLowerCase('es');
+        const riskFilter = $('historyRiskFilter')?.value || 'all';
+        const filtered = history.filter(function (record) {
+            const searchable = [record.title, record.date].filter(Boolean).join(' ').toLocaleLowerCase('es');
+            if (query && !searchable.includes(query)) return false;
+            if (riskFilter === 'all') return true;
+            const band = engine.riskBand(record.score || 0);
+            return riskFilter === 'high' ? (band === 'high' || band === 'critical') : band === riskFilter;
+        });
+        $('historyFilterStatus').textContent = filtered.length + ' de ' + history.length + ' análisis';
+        if (!filtered.length) {
+            const empty = document.createElement('p');
+            empty.className = 'history-no-results';
+            empty.textContent = 'No hay análisis que coincidan con los filtros.';
+            list.append(empty);
+            return;
+        }
+        filtered.forEach(function (item) {
             const row = document.createElement('div');
             row.className = 'history-item';
             const open = document.createElement('button');
@@ -1064,6 +1081,8 @@
         });
         $('exportTxtBtn').addEventListener('click', exportTxt);
         $('exportPdfBtn').addEventListener('click', exportPdf);
+        $('historySearch').addEventListener('input', renderHistory);
+        $('historyRiskFilter').addEventListener('change', renderHistory);
         $('clearHistoryBtn').addEventListener('click', function () {
             if (!clearArmed) {
                 clearArmed = true;
