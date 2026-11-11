@@ -562,3 +562,49 @@ details > summary:focus-visible {
 @media (max-width: 650px) {
     .gemini-retry { align-items: stretch; flex-direction: column; }
 }
+
+/* Finding and recommendation readability */
+.finding-card {
+    display: block;
+    width: 100%;
+    padding: 17px 18px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #dce5ee;
+    border-left: 4px solid #d6a239;
+    text-align: left;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.finding-card:hover { box-shadow: 0 4px 16px #152c4012; }
+.finding-card:focus-visible { outline: 2px solid #0e8276; outline-offset: 2px; }
+.finding-card.high, .finding-card.critical { border-left-color: #e75d68; }
+.finding-card.low { border-left-color: #0e8276; }
+.finding-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.finding-heading h3 { margin: 0; font-size: .96rem; line-height: 1.45; color: #14263b; }
+.finding-severity {
+    flex: 0 0 auto;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #fff3db;
+    color: #8c5c0b;
+    font-size: .7rem;
+    font-weight: 700;
+}
+.finding-card.high .finding-severity,
+.finding-card.critical .finding-severity { background: #fff0f1; color: #ac303e; }
+.finding-card.low .finding-severity { background: #e5f6f0; color: #08745f; }
+.finding-description { margin: 10px 0 0; color: #52667d; line-height: 1.6; }
+.finding-quote {
+    margin: 12px 0 0;
+    padding: 11px 13px;
+    border-left: 3px solid #b8c8d8;
+    border-radius: 0 8px 8px 0;
+    background: #f3f7fa;
+    color: #31475e;
+    font-size: .8rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+.recs { margin-top: 22px; }
+.recs li { padding: 10px 4px 10px 8px; line-height: 1.6; border-bottom: 1px solid #e5ebf1; }
+.recs li:last-child { border-bottom: 0; }
