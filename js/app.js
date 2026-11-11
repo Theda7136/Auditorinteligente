@@ -600,6 +600,7 @@
         const list = $('historyList');
         list.replaceChildren();
         if (!history.length) {
+            $('historyFilterStatus').textContent = '0 análisis';
             const empty = document.createElement('p');
             empty.className = 'empty';
             empty.textContent = 'Todavía no hay auditorías en este navegador.';
