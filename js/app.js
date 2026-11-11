@@ -168,19 +168,45 @@
         alerts.forEach(function (alert) {
             const button = document.createElement('button');
             button.type = 'button';
-            button.className = 'alert ' + (alert.level || 'medium');
+            button.className = 'alert finding-card ' + (alert.level || 'medium');
+
+            const heading = document.createElement('div');
+            heading.className = 'finding-heading';
+
             const title = document.createElement('h3');
             title.textContent = alert.title || 'Hallazgo';
-            const description = document.createElement('p');
-            description.textContent = alert.desc || '';
-            button.append(title, description);
-            (alert.evidence || [{ excerpt: alert.excerpt }]).forEach(function (evidence) {
-                if (!evidence.excerpt) return;
-                const quote = document.createElement('p');
-                quote.className = 'quote';
-                quote.textContent = (evidence.clauseId ? evidence.clauseId + ' · ' : '') + (evidence.statement ? evidence.statement + ' — ' : '') + 'Cita: ' + evidence.excerpt;
+            heading.append(title);
+
+            const severity = { critical: 'Crítico', high: 'Alto', medium: 'Medio', low: 'Bajo' };
+            if (alert.level) {
+                const badge = document.createElement('span');
+                badge.className = 'finding-severity';
+                badge.textContent = severity[alert.level] || alert.level;
+                heading.append(badge);
+            }
+            button.append(heading);
+
+            if (alert.desc) {
+                const description = document.createElement('p');
+                description.className = 'finding-description';
+                description.textContent = alert.desc;
+                button.append(description);
+            }
+
+            const evidenceList = Array.isArray(alert.evidence) && alert.evidence.length
+                ? alert.evidence
+                : [{ excerpt: alert.excerpt, clauseId: alert.clauseId }];
+
+            evidenceList.forEach(function (evidence) {
+                if (!evidence?.excerpt) return;
+                const quote = document.createElement('blockquote');
+                quote.className = 'quote finding-quote';
+                const reference = evidence.clauseId ? evidence.clauseId + ' · ' : '';
+                const statement = evidence.statement ? evidence.statement + ' — ' : '';
+                quote.textContent = reference + statement + evidence.excerpt;
                 button.append(quote);
             });
+
             button.addEventListener('click', function () { revealExcerpt(alert); });
             container.append(button);
         });
