@@ -615,3 +615,17 @@ details > summary:focus-visible {
     overflow: visible;
     align-content: start;
 }
+
+/* Comparison is a source index; detailed evidence lives in Hallazgos. */
+#hybridPanel .hybrid-finding {
+    min-height: 0;
+    padding: 11px 13px;
+}
+#hybridPanel .hybrid-finding-title { display: block; font-size: .86rem; line-height: 1.4; }
+#hybridPanel .hybrid-finding-reference {
+    display: block;
+    margin-top: 4px;
+    color: #657b8e;
+    font-size: .72rem;
+}
+#hybridPanel .hybrid-group { gap: 7px; }
