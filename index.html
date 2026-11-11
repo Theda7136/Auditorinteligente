@@ -26,10 +26,10 @@
                 <span><strong>Auditor</strong><small>INTELIGENTE</small></span>
             </a>
             <span class="sidebar-label">ESPACIO DE TRABAJO</span>
-            <a class="sidebar-link is-current" href="#workspaceAudit"><span aria-hidden="true">▤</span> Auditoría</a>
-            <a class="sidebar-link" href="#workspaceHistory"><span aria-hidden="true">◷</span> Historial</a>
-            <a class="sidebar-link" href="#workspaceSettings"><span aria-hidden="true">⚙</span> Configuración</a>
-            <a class="sidebar-link" href="#workspaceAccount"><span aria-hidden="true">◉</span> Mi cuenta</a>
+            <a class="sidebar-link is-current" href="#workspaceAudit" data-target-view="audit" aria-current="page"><span aria-hidden="true">▤</span> Auditoría</a>
+            <a class="sidebar-link" href="#workspaceHistory" data-target-view="history"><span aria-hidden="true">◷</span> Historial</a>
+            <a class="sidebar-link" href="#workspaceSettings" data-target-view="settings"><span aria-hidden="true">⚙</span> Configuración</a>
+            <a class="sidebar-link" href="#workspaceAccount" data-target-view="account"><span aria-hidden="true">◉</span> Mi cuenta</a>
             <p class="sidebar-footnote">Análisis de contratos con trazabilidad.</p>
         </nav>
         <header class="topbar">
@@ -51,7 +51,7 @@
 
         <p id="appNotice" class="notice" hidden></p>
 
-        <div id="workspaceAudit" class="layout">
+        <div id="workspaceAudit" class="layout workspace-view" data-view="audit">
             <div class="stack">
                 <section class="card">
                     <div class="row">
@@ -120,7 +120,84 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                 </section>
 
-                <details id="workspaceSettings" class="card no-print connection-card">
+            </div>
+
+            <aside class="card">
+                <div class="row">
+                    <h2>Dictamen</h2>
+                    <span id="auditSourceTag" class="tag">Sin análisis</span>
+                </div>
+                <div id="emptyState" class="empty">
+                    <div class="empty-symbol" aria-hidden="true">▤</div>
+                    <h3>Tu análisis comienza aquí</h3>
+                    <p>Selecciona el tipo de contrato, revisa el texto y pulsa <strong>Analizar contrato</strong>. Aquí encontrarás los riesgos, las citas y las recomendaciones.</p>
+                </div>
+                <div id="resultsBody" hidden>
+                    <div id="riskCard" class="risk-card" data-band="low">
+                        <header>
+                            <span class="muted">Puntuación de riesgo</span>
+                            <span class="muted">0–100</span>
+                        </header>
+                        <div class="meter-row">
+                            <div class="meter" aria-hidden="true"><span id="riskScoreBar"></span></div>
+                            <span id="riskScore" class="score-num">0</span>
+                        </div>
+                        <div class="row">
+                            <strong id="riskLevelLabel">Riesgo</strong>
+                            <span id="auditTimestampText" class="muted"></span>
+                        </div>
+                    </div>
+                    <p id="contextLine" class="muted"></p>
+                    <details class="analysis-details">
+                        <summary>Motor, alcance y trazabilidad</summary>
+                        <div id="analysisDetailsText"></div>
+                    </details>
+                    <p id="truncationNote" class="notice warn" hidden></p>
+                    <section id="auditModePanel" class="recs" hidden>
+                        <h3 id="auditModeTitle"></h3>
+                        <p id="auditModeDescription" class="muted"></p>
+                    </section>
+                    <section id="hybridPanel" class="recs" hidden>
+                        <h3>Comparación de motores</h3>
+                        <p class="muted">
+                            Coincidencias y diferencias entre Gemini y el motor local.
+                            La coincidencia no garantiza que un hallazgo sea jurídicamente correcto.
+                        </p>
+
+                        <div class="row">
+                            <strong id="hybridSummary"></strong>
+                        </div>
+
+                        <div id="hybridFindings" class="alerts"></div>
+                    </section>
+                    <div class="row">
+                        <h3>Hallazgos</h3>
+                        <span id="alertsCountBadge" class="count">0</span>
+                    </div>
+                    <div id="alertsContainer" class="alerts"></div>
+                    <div class="recs">
+                        <h3>Recomendaciones</h3>
+                        <ul id="recommendationsList"></ul>
+                    </div>
+                    <p class="muted">Pulsa un hallazgo para localizar la cita en el texto. Esto no es un dictamen legal.
+                    </p>
+                    <div class="export-row">
+                        <button id="exportPdfBtn" class="btn" type="button" disabled>Exportar PDF</button>
+                        <button id="exportTxtBtn" class="btn secondary" type="button" disabled>Descargar TXT</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <div class="workspace-view" data-view="history"><section id="workspaceHistory" class="card no-print">
+                    <div class="row">
+                        <h2>Historial <span id="historyCountBadge" class="count">0</span></h2>
+                        <button id="clearHistoryBtn" class="btn danger" type="button">Limpiar historial</button>
+                    </div>
+                    <p class="muted">En modo invitado el historial queda en este navegador. Con sesión iniciada, se
+                        guarda en tu cuenta un extracto y el dictamen; nunca el contrato completo.</p>
+                    <div id="historyList" class="history"></div>
+                </section></div>
+        <div class="workspace-view" data-view="settings"><details id="workspaceSettings" open class="card no-print connection-card">
                     <summary>
                         <span>Conexión y prioridades</span>
                         <span class="muted"><span id="configStatusText">Modo local</span> <span class="chevron"
@@ -179,84 +256,9 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                             Guardar el texto completo del contrato en este navegador
                         </label>
                     </div>
-                </details>
+                </details></div>
 
-                <section id="workspaceHistory" class="card no-print">
-                    <div class="row">
-                        <h2>Historial <span id="historyCountBadge" class="count">0</span></h2>
-                        <button id="clearHistoryBtn" class="btn danger" type="button">Limpiar historial</button>
-                    </div>
-                    <p class="muted">En modo invitado el historial queda en este navegador. Con sesión iniciada, se
-                        guarda en tu cuenta un extracto y el dictamen; nunca el contrato completo.</p>
-                    <div id="historyList" class="history"></div>
-                </section>
-            </div>
-
-            <aside class="card">
-                <div class="row">
-                    <h2>Dictamen</h2>
-                    <span id="auditSourceTag" class="tag">Sin análisis</span>
-                </div>
-                <div id="emptyState" class="empty">
-                    <p>Aquí aparecerá la puntuación, las citas y las recomendaciones después de analizar.</p>
-                </div>
-                <div id="resultsBody" hidden>
-                    <div id="riskCard" class="risk-card" data-band="low">
-                        <header>
-                            <span class="muted">Puntuación de riesgo</span>
-                            <span class="muted">0–100</span>
-                        </header>
-                        <div class="meter-row">
-                            <div class="meter" aria-hidden="true"><span id="riskScoreBar"></span></div>
-                            <span id="riskScore" class="score-num">0</span>
-                        </div>
-                        <div class="row">
-                            <strong id="riskLevelLabel">Riesgo</strong>
-                            <span id="auditTimestampText" class="muted"></span>
-                        </div>
-                    </div>
-                    <p id="contextLine" class="muted"></p>
-                    <details class="analysis-details">
-                        <summary>Motor, alcance y trazabilidad</summary>
-                        <div id="analysisDetailsText"></div>
-                    </details>
-                    <p id="truncationNote" class="notice warn" hidden></p>
-                    <section id="auditModePanel" class="recs" hidden>
-                        <h3 id="auditModeTitle"></h3>
-                        <p id="auditModeDescription" class="muted"></p>
-                    </section>
-                    <section id="hybridPanel" class="recs" hidden>
-                        <h3>Comparación de motores</h3>
-                        <p class="muted">
-                            Coincidencias y diferencias entre Gemini y el motor local.
-                            La coincidencia no garantiza que un hallazgo sea jurídicamente correcto.
-                        </p>
-
-                        <div class="row">
-                            <strong id="hybridSummary"></strong>
-                        </div>
-
-                        <div id="hybridFindings" class="alerts"></div>
-                    </section>
-                    <div class="row">
-                        <h3>Hallazgos</h3>
-                        <span id="alertsCountBadge" class="count">0</span>
-                    </div>
-                    <div id="alertsContainer" class="alerts"></div>
-                    <div class="recs">
-                        <h3>Recomendaciones</h3>
-                        <ul id="recommendationsList"></ul>
-                    </div>
-                    <p class="muted">Pulsa un hallazgo para localizar la cita en el texto. Esto no es un dictamen legal.
-                    </p>
-                    <div class="export-row">
-                        <button id="exportPdfBtn" class="btn" type="button" disabled>Exportar PDF</button>
-                        <button id="exportTxtBtn" class="btn secondary" type="button" disabled>Descargar TXT</button>
-                    </div>
-                </div>
-            </aside>
-        </div>
-        <section id="workspaceAccount" class="card account-card no-print" aria-labelledby="accountHeading">
+        <section id="workspaceAccount" data-view="account" class="card account-card no-print workspace-view" aria-labelledby="accountHeading">
             <div class="row">
                 <h2 id="accountHeading">Tu cuenta</h2>
                 <span id="accountStatus" class="muted">Modo invitado</span>
@@ -299,6 +301,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
 
     <script src="js/audit-engine.js?v=ui-v7"></script>
     <script src="js/app.js?v=ui-v7"></script>
+    <script src="js/workspace.js?v=ui-v1"></script>
 </body>
 
 </html>
