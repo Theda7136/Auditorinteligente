@@ -222,6 +222,11 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                     <p id="historyFilterStatus" class="history-filter-status muted" role="status"></p>
                     <div id="historyList" class="history"></div>
+                    <nav id="historyPagination" class="history-pagination" aria-label="Páginas del historial" hidden>
+                        <button id="historyPrevPage" class="btn secondary" type="button">Anterior</button>
+                        <span id="historyPageStatus" aria-live="polite"></span>
+                        <button id="historyNextPage" class="btn secondary" type="button">Siguiente</button>
+                    </nav>
                 </section></div>
         <div class="workspace-view" data-view="settings"><details id="workspaceSettings" open class="card no-print connection-card">
                     <summary>
