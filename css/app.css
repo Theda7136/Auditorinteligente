@@ -542,3 +542,23 @@ details > summary:focus-visible {
 @media (max-width: 540px) {
     .hybrid-tabs { grid-template-columns: 1fr; }
 }
+
+.gemini-retry[hidden] { display: none !important; }
+.gemini-retry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: -6px 0 20px;
+    padding: 16px 20px;
+    border: 1px solid #f0cf8a;
+    border-radius: 12px;
+    background: #fff9eb;
+    color: #634b20;
+}
+.gemini-retry strong { display: block; font-size: .92rem; }
+.gemini-retry p { margin: 5px 0 0; font-size: .82rem; line-height: 1.5; }
+.gemini-retry .btn { flex-shrink: 0; }
+@media (max-width: 650px) {
+    .gemini-retry { align-items: stretch; flex-direction: column; }
+}
