@@ -7,6 +7,8 @@
 
     let currentAnalysis = null;
     let clearArmed = false;
+    let historyPage = 1;
+    const HISTORY_PAGE_SIZE = 10;
     let currentUser = null;
     let serverHistory = [];
     let csrfTokenValue = '';
@@ -598,55 +600,74 @@
         const history = readHistory();
         $('historyCountBadge').textContent = String(history.length);
         const list = $('historyList');
+        const pagination = $('historyPagination');
         list.replaceChildren();
-        if (!history.length) {
-            $('historyFilterStatus').textContent = '0 análisis';
-            const empty = document.createElement('p');
-            empty.className = 'empty';
-            empty.textContent = 'Todavía no hay auditorías en este navegador.';
-            list.append(empty);
-            return;
-        }
-        const query = ($('historySearch')?.value || '').trim().toLocaleLowerCase('es');
-        const riskFilter = $('historyRiskFilter')?.value || 'all';
+
+        const query = $('historySearch').value.trim().toLocaleLowerCase('es');
+        const riskFilter = $('historyRiskFilter').value;
         const filtered = history.filter(function (record) {
             const searchable = [record.title, record.date].filter(Boolean).join(' ').toLocaleLowerCase('es');
             if (query && !searchable.includes(query)) return false;
             if (riskFilter === 'all') return true;
             const band = engine.riskBand(record.score || 0);
-            return riskFilter === 'high' ? (band === 'high' || band === 'critical') : band === riskFilter;
+            return riskFilter === 'high' ? band === 'high' || band === 'critical' : band === riskFilter;
         });
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / HISTORY_PAGE_SIZE));
+        historyPage = Math.min(Math.max(1, historyPage), totalPages);
+        pagination.hidden = filtered.length <= HISTORY_PAGE_SIZE;
+        $('historyPrevPage').disabled = historyPage === 1;
+        $('historyNextPage').disabled = historyPage === totalPages;
+        $('historyPageStatus').textContent = 'Página ' + historyPage + ' de ' + totalPages;
         $('historyFilterStatus').textContent = filtered.length + ' de ' + history.length + ' análisis';
+
         if (!filtered.length) {
             const empty = document.createElement('p');
             empty.className = 'history-no-results';
-            empty.textContent = 'No hay análisis que coincidan con los filtros.';
+            empty.textContent = history.length
+                ? 'No hay análisis que coincidan con los filtros.'
+                : 'Todavía no hay auditorías guardadas.';
             list.append(empty);
             return;
         }
-        filtered.forEach(function (item) {
+
+        const pageRecords = filtered.slice((historyPage - 1) * HISTORY_PAGE_SIZE, historyPage * HISTORY_PAGE_SIZE);
+        let currentGroup = '';
+        pageRecords.forEach(function (record) {
+            const dateGroup = String(record.date || '').slice(0, 10) || 'Sin fecha';
+            if (dateGroup !== currentGroup) {
+                currentGroup = dateGroup;
+                const heading = document.createElement('h3');
+                heading.className = 'history-date-heading';
+                heading.textContent = dateGroup;
+                list.append(heading);
+            }
+
             const row = document.createElement('div');
             row.className = 'history-item';
             const open = document.createElement('button');
             open.type = 'button';
             open.className = 'history-open';
-            const text = document.createElement('span');
+            const description = document.createElement('span');
+            description.className = 'history-description';
             const title = document.createElement('strong');
-            title.textContent = item.title || 'Contrato';
+            title.textContent = record.title || 'Contrato';
             const meta = document.createElement('span');
-            meta.className = 'muted';
-            meta.textContent = (item.date || '') + (item.textStored ? '' : ' · sin texto completo');
-            text.append(title, document.createElement('br'), meta);
-            const pill = document.createElement('span');
-            pill.className = 'score-pill ' + engine.riskBand(item.score || 0);
-            pill.textContent = (item.score ?? '–') + '/100';
-            open.append(text, pill);
-            open.addEventListener('click', function () { loadAudit(item.id); });
+            meta.className = 'history-meta';
+            meta.textContent = (record.date || '') + (record.textStored ? ' · Texto guardado' : ' · Solo extracto');
+            description.append(title, meta);
+            const score = document.createElement('span');
+            score.className = 'score-pill ' + engine.riskBand(record.score || 0);
+            score.textContent = (record.score ?? '–') + '/100';
+            open.append(description, score);
+            open.addEventListener('click', function () { loadAudit(record.id); });
+
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'btn tiny ghost danger';
             remove.textContent = 'Borrar';
-            remove.addEventListener('click', function () { deleteAudit(item.id); });
+            remove.setAttribute('aria-label', 'Borrar ' + (record.title || 'Contrato') + ' del ' + (record.date || 'historial'));
+            remove.addEventListener('click', function () { deleteAudit(record.id); });
             row.append(open, remove);
             list.append(row);
         });
@@ -1084,8 +1105,23 @@
         });
         $('exportTxtBtn').addEventListener('click', exportTxt);
         $('exportPdfBtn').addEventListener('click', exportPdf);
-        $('historySearch').addEventListener('input', renderHistory);
-        $('historyRiskFilter').addEventListener('change', renderHistory);
+        function resetHistoryFilters() {
+            historyPage = 1;
+            renderHistory();
+        }
+        $('historySearch').addEventListener('input', resetHistoryFilters);
+        $('historyRiskFilter').addEventListener('change', resetHistoryFilters);
+        $('historyPrevPage').addEventListener('click', function () {
+            if (historyPage <= 1) return;
+            historyPage -= 1;
+            renderHistory();
+            $('workspaceHistory').scrollIntoView({ block: 'start' });
+        });
+        $('historyNextPage').addEventListener('click', function () {
+            historyPage += 1;
+            renderHistory();
+            $('workspaceHistory').scrollIntoView({ block: 'start' });
+        });
         $('clearHistoryBtn').addEventListener('click', function () {
             if (!clearArmed) {
                 clearArmed = true;
