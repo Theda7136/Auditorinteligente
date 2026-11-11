@@ -753,3 +753,56 @@ body {
     .gemini-retry { flex-wrap: wrap; }
     .gemini-retry .btn { width: 100%; }
 }
+
+/* History and settings: compact, searchable secondary workflows. */
+.gemini-retry.audit-only-hidden { display: none !important; }
+#workspaceHistory .history-tools {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(190px, 1fr);
+    gap: 14px;
+    margin: 22px 0 8px;
+}
+#workspaceHistory .history-tools label { display: block; margin-bottom: 7px; }
+#workspaceHistory .history-tools input,
+#workspaceHistory .history-tools select { width: 100%; min-height: 44px; }
+#workspaceHistory .history-filter-status {
+    margin: 9px 0 15px;
+    font: 400 .76rem "DM Mono", Consolas, monospace;
+}
+#workspaceHistory .history-no-results { padding: 28px 0; color: #69716e; }
+#workspaceHistory .history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+}
+#workspaceHistory .history-open { flex: 1; min-width: 0; }
+#workspaceHistory .history-open strong {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .9rem;
+}
+#workspaceHistory .history-open .muted { font-size: .76rem; }
+#workspaceHistory .history-item > .btn { flex: none; }
+#workspaceSettings .settings-section-heading {
+    margin: 26px 0 15px;
+    padding-top: 20px;
+    border-top: 1px solid #d8d9d2;
+    color: #313b34;
+    font: 500 1.2rem "Newsreader", Georgia, serif;
+}
+#workspaceSettings .config-body > .settings-section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+#workspaceAccount .account-session {
+    padding: 8px 0 22px;
+}
+@media screen and (max-width: 760px) {
+    #workspaceHistory .history-tools { grid-template-columns: 1fr; }
+    #workspaceHistory .history-item { align-items: start; }
+}
