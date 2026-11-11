@@ -487,3 +487,42 @@ body {
         margin-left: 0;
     }
 }
+
+/* Findings keep the source preview concise; complete evidence remains available on demand. */
+.legal-report .finding-entry {
+    border-bottom: 1px solid #d3d6cc;
+}
+.legal-report .finding-entry > .finding-card {
+    width: 100%;
+    border-bottom: 0;
+    text-align: left;
+}
+.legal-report .finding-entry:last-child > .finding-card {
+    border-bottom: 0;
+}
+.legal-report .finding-quote-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    max-height: 5.4em;
+}
+.legal-report .finding-evidence {
+    padding: 0 15px 16px;
+}
+.legal-report .finding-evidence summary {
+    width: fit-content;
+    color: #675439;
+    cursor: pointer;
+    font-size: .8rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.legal-report .finding-evidence[open] summary {
+    margin-bottom: 12px;
+}
+.legal-report .finding-evidence .finding-quote {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
