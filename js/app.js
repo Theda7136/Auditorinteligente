@@ -241,6 +241,32 @@
             description.textContent = recommendation;
 
             content.append(label, description);
+
+            const linkedAlerts = alerts.filter(function (alert) {
+                const suggestions = [alert.recommendation, alert.recommendedAction]
+                    .concat(Array.isArray(alert.recommendations) ? alert.recommendations : []);
+                return suggestions.some(function (suggestion) {
+                    return typeof suggestion === 'string'
+                        && suggestion.trim().toLocaleLowerCase('es') === recommendation.trim().toLocaleLowerCase('es');
+                });
+            });
+
+            if (linkedAlerts.length === 1) {
+                const linkedAlert = linkedAlerts[0];
+                const reference = document.createElement('button');
+                reference.type = 'button';
+                reference.className = 'recommendation-reference';
+                reference.textContent = 'Ver hallazgo relacionado';
+                reference.addEventListener('click', function () {
+                    const alertIndex = alerts.indexOf(linkedAlert);
+                    const findingCard = container.children[alertIndex];
+                    if (!findingCard) return;
+                    findingCard.click();
+                    findingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                content.append(reference);
+            }
+
             item.append(number, content);
             list.append(item);
         });
