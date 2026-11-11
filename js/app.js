@@ -83,10 +83,10 @@
         const configured = window.geminiAvailable === true;
         const badge = $('statusBadge');
         const label = !configured
-            ? 'Modo local'
+            ? 'Revisión local disponible'
             : lastGeminiError
-                ? 'Gemini: último intento fallido'
-                : 'Gemini configurado · sin verificar';
+                ? 'Servicio de IA temporalmente no disponible'
+                : 'Servicio de IA configurado · sin verificar';
 
         $('configStatusText').textContent = label;
         $('statusText').textContent = label;
@@ -149,7 +149,9 @@
         $('riskScore').textContent = String(data.score);
         $('riskScoreBar').style.width = data.score + '%';
         $('riskLevelLabel').textContent = 'Riesgo ' + engine.riskLabel(data.score).toLowerCase();
-        $('auditSourceTag').textContent = 'Análisis completado';
+        $('auditSourceTag').textContent = /^Gemini \(/.test(data.source || '')
+            ? 'Revisión con IA'
+            : 'Revisión preliminar';
         $('auditTimestampText').textContent = data.date || '';
         const details = engine.traceLines(data);
         const reviewStates = { risk: 'riesgo identificado', not_detected: 'sin riesgo detectado', uncertain: 'requiere revisión' };
