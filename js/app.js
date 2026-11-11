@@ -25,6 +25,18 @@
         notice.textContent = message;
     }
 
+    function setGeminiRetry(error) {
+        const panel = $('geminiRetryPanel');
+        if (!panel) return;
+        const retryable = error && !['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code);
+        panel.hidden = !retryable;
+        if (!retryable) return;
+        const unavailable = error.diagnostic?.httpStatus === 503;
+        $('geminiRetryDescription').textContent = unavailable
+            ? 'El proveedor respondió HTTP 503. Se utilizó el motor local como respaldo. Puedes intentar de nuevo.'
+            : 'El análisis se completó mediante el motor local. Puedes intentar nuevamente con Gemini.';
+    }
+
     function readPrefs() {
         return {
             contractType: $('contractType').value,
@@ -559,6 +571,7 @@
         $('analyzeBtn').disabled = true;
         $('uploadBtn').disabled = true;
         showNotice('');
+        setGeminiRetry(null);
 
         try {
             let result = null;
@@ -596,10 +609,12 @@
                     });
                     source = 'Gemini (' + request.model + ')';
                     lastGeminiError = null;
+                    setGeminiRetry(null);
                     $('serverStatus').textContent = 'Último análisis con Gemini: completado correctamente.';
                     updateConnectionBadge();
                 } catch (error) {
                     recordGeminiError(error);
+                    setGeminiRetry(error);
                     if (['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code)) {
                         showNotice(error.message, 'bad');
                         return;
@@ -896,6 +911,7 @@
                 $(id).addEventListener('change', savePrefs);
             });
         $('analyzeBtn').addEventListener('click', analyzeContract);
+        $('retryGeminiBtn').addEventListener('click', analyzeContract);
         $('clearTextBtn').addEventListener('click', function () {
             $('contractText').value = '';
             renderDashboard(null);
