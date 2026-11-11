@@ -124,13 +124,11 @@
         if (data) {
             const isHybrid = Boolean(data.hybridComparison);
 
-            modeTitle.textContent = isHybrid
-                ? 'Análisis híbrido completado'
-                : 'Análisis local completado';
+            modeTitle.textContent = 'Revisión del contrato completada';
 
             modeDescription.textContent = isHybrid
-                ? 'Gemini y el motor local analizaron el contrato.'
-                : 'El contrato fue revisado mediante reglas locales. La comparación híbrida no está disponible en esta ejecución.';
+                ? 'Consulta los riesgos identificados y las recomendaciones para revisar las cláusulas.'
+                : 'Revisión preliminar basada en reglas automatizadas. Algunos riesgos pueden requerir una evaluación profesional adicional.';
         }
         const hasResult = Boolean(data);
         $('emptyState').hidden = hasResult;
