@@ -360,3 +360,33 @@ body {
 .legal-report .report-findings {
     border-top: 1px solid #cdd0c6;
 }
+
+/* Recommendations read as an action plan, without inventing legal classifications. */
+.legal-report .report-recommendations .recommendation-action {
+    display: grid;
+    grid-template-columns: 35px minmax(0, 1fr);
+    gap: 13px;
+    align-items: start;
+    padding: 17px 0;
+    list-style: none;
+}
+.legal-report .report-recommendations #recommendationsList {
+    margin: 0;
+    padding: 0;
+}
+.legal-report .recommendation-number {
+    padding-top: 2px;
+    color: #897859;
+    font: 500 .74rem "DM Mono", Consolas, monospace;
+}
+.legal-report .recommendation-label {
+    color: #77786e;
+    font: 500 .65rem "DM Mono", Consolas, monospace;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+.legal-report .recommendation-content p {
+    margin: 6px 0 0;
+    color: #28332d;
+    line-height: 1.65;
+}
