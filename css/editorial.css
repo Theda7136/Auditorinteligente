@@ -271,3 +271,18 @@ body {
     #workspaceAudit > .stack { position: static; }
     #contractText { min-height: 350px; }
 }
+
+/* Selected evidence connects the report to its source document. */
+.finding-card.is-selected {
+    background: #f4f0e4;
+    border-color: #b7a47d;
+    border-left-color: #7a6341;
+    box-shadow: inset 0 0 0 1px #b7a47d;
+}
+#contractText.contract-evidence-active {
+    border-color: #8b7550;
+    box-shadow: 0 0 0 2px #c5b48b66;
+}
+@media screen and (min-width: 1181px) {
+    #workspaceAudit > .stack { z-index: 2; }
+}
