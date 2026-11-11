@@ -191,17 +191,28 @@
 
         panel.hidden = !comparison;
         container.replaceChildren();
+        const tabs = $('hybridTabs');
+        if (tabs) tabs.replaceChildren();
         if (!comparison) return;
 
         const agreements = comparison.agreements || [];
         const localOnly = comparison.localOnly || [];
         const geminiOnly = comparison.geminiOnly || [];
 
-        summary.textContent = `${agreements.length} coincidencias · ${localOnly.length} solo local · ${geminiOnly.length} solo Gemini`;
+        summary.textContent = 'Resultados comparados por origen. Selecciona una categoría para revisar sus hallazgos.';
+        const groups = [];
+        let activeTone = 'agreement';
+
+        function selectGroup(tone) {
+            activeTone = tone;
+            for (const entry of groups) {
+                entry.group.hidden = entry.tone !== tone;
+                entry.tab.setAttribute('aria-selected', String(entry.tone === tone));
+                entry.tab.tabIndex = entry.tone === tone ? 0 : -1;
+            }
+        }
 
         function addGroup(label, findings, tone, getFinding) {
-            if (!findings.length) return;
-
             const group = document.createElement('section');
             group.className = 'hybrid-group';
 
@@ -241,6 +252,22 @@
             });
 
             container.append(group);
+            if (tabs) {
+                const tab = document.createElement('button');
+                tab.type = 'button';
+                tab.className = 'hybrid-tab';
+                tab.setAttribute('role', 'tab');
+                tab.textContent = `${label} (${findings.length})`;
+                tab.addEventListener('click', function () { selectGroup(tone); });
+                tabs.append(tab);
+                groups.push({ tone, group, tab });
+            }
+            if (!findings.length) {
+                const empty = document.createElement('p');
+                empty.className = 'muted hybrid-empty';
+                empty.textContent = 'No se encontraron hallazgos en esta categoría.';
+                group.append(empty);
+            }
         }
 
         addGroup('Coincidencias', agreements, 'agreement', function (entry) {
@@ -252,6 +279,7 @@
         addGroup('Solo Gemini', geminiOnly, 'gemini', function (entry) {
             return entry;
         });
+        if (tabs) selectGroup(agreements.length ? 'agreement' : localOnly.length ? 'local' : 'gemini');
     }
 
     function installHybridStyles() {
