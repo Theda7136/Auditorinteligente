@@ -922,7 +922,7 @@
             y += settings.gap == null ? 2 : settings.gap;
         }
 
-        doc.setFillColor(23, 43, 77);
+        doc.setFillColor(35, 42, 39);
         doc.rect(0, 0, pageWidth, 36, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFont('helvetica', 'bold');
@@ -932,13 +932,15 @@
         doc.setFontSize(9);
         doc.text('Riesgos, citas y recomendaciones para negociar', margin, 26);
         y = 48;
-        addParagraph(data.contractType + ' · ' + (data.jurisdictionLabel || '') + ' · ' + engine.partyLabel(data.party), { bold: true, size: 11, color: [23, 43, 77] });
+        addParagraph(data.contractType + ' · ' + (data.jurisdictionLabel || '') + ' · ' + engine.partyLabel(data.party), { bold: true, size: 11, color: [53, 62, 55] });
         addParagraph((data.date || '') + '  |  ' + (data.source || ''));
         addParagraph('Evaluacion: ' + data.score + ' / 100 — ' + engine.riskLabel(data.score), { bold: true, size: 12, color: data.score >= 70 ? [180, 35, 24] : [23, 43, 77], gap: 6 });
         if (data.truncated) {
             addParagraph('El modelo solo reviso ' + data.analyzedLength + ' de ' + data.originalLength + ' caracteres.', { gap: 4 });
         }
         engine.traceLines(data).forEach(function (line) { addParagraph(line, { size: 8 }); });
+        addParagraph('ALCANCE Y LIMITACIONES', { bold: true, size: 11, color: [57, 65, 61], gap: 3, keepNext: 14 });
+        engine.reportLimitations(data).forEach(function (line) { addParagraph(line, { size: 9, color: [78, 84, 77], gap: 2 }); });
         addParagraph('HALLAZGOS', { bold: true, size: 12, color: [23, 43, 77], gap: 3, keepNext: 24 });
         (data.alerts || []).forEach(function (alert, index) {
             addParagraph((index + 1) + '. ' + alert.title + ' [' + String(alert.level || '').toUpperCase() + ']', { bold: true, gap: 1, keepNext: 10 });
