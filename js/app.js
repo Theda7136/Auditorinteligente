@@ -68,8 +68,8 @@
     function updateConnectionBadge() {
         const ready = window.geminiAvailable === true;
         const badge = $('statusBadge');
-        $('configStatusText').textContent = ready ? 'Gemini disponible' : 'Modo local';
-        $('statusText').textContent = ready ? 'Gemini conectado al servidor' : 'Modo local';
+        $('configStatusText').textContent = ready ? 'Gemini configurado' : 'Modo local';
+        $('statusText').textContent = ready ? 'Gemini configurado; conexión sin verificar' : 'Modo local';
         badge.classList.toggle('live', ready);
     }
 
@@ -96,6 +96,11 @@
         $('riskLevelLabel').textContent = 'Riesgo ' + engine.riskLabel(data.score).toLowerCase();
         $('auditSourceTag').textContent = data.source || 'Auditoría';
         $('auditTimestampText').textContent = data.date || '';
+        const details = engine.traceLines(data);
+        const reviewStates = { risk: 'riesgo identificado', not_detected: 'sin riesgo detectado', uncertain: 'requiere revisión' };
+        (data.coverage || []).forEach(row => details.push((engine.REVIEW_LABELS[engine.REVIEW_CATEGORIES.indexOf(row.category)] || row.category) + ': ' + (reviewStates[row.status] || row.status) + ' — ' + row.reason));
+        (data.clauseReviews || []).forEach(row => details.push(row.clauseId + ': ' + (reviewStates[row.status] || row.status) + ' — ' + row.reason));
+        $('analysisDetailsText').textContent = details.join('\n');
         $('contextLine').textContent = [
             data.contractType || 'Contrato',
             data.jurisdictionLabel || '',
@@ -119,12 +124,13 @@
             const description = document.createElement('p');
             description.textContent = alert.desc || '';
             button.append(title, description);
-            if (alert.excerpt) {
+            (alert.evidence || [{ excerpt: alert.excerpt }]).forEach(function (evidence) {
+                if (!evidence.excerpt) return;
                 const quote = document.createElement('p');
                 quote.className = 'quote';
-                quote.textContent = 'Cita: ' + alert.excerpt;
+                quote.textContent = (evidence.clauseId ? evidence.clauseId + ' · ' : '') + (evidence.statement ? evidence.statement + ' — ' : '') + 'Cita: ' + evidence.excerpt;
                 button.append(quote);
-            }
+            });
             button.addEventListener('click', function () { revealExcerpt(alert); });
             container.append(button);
         });
@@ -207,7 +213,7 @@
             const status = await response.json();
             window.geminiAvailable = response.ok && status.gemini === true;
             $('serverStatus').textContent = window.geminiAvailable
-                ? 'Gemini disponible'
+                ? 'Gemini configurado'
                 : 'Gemini no configurado; análisis local disponible';
         } catch (error) {
             window.geminiAvailable = false;
@@ -218,7 +224,7 @@
 
     async function callGemini(options) {
         let response;
-        for (let attempt = 0; attempt < 3; attempt += 1) {
+        for (let attempt = 0; attempt < 1; attempt += 1) {
             try {
                 response = await fetch('/api/analyze', {
                     method: 'POST',
@@ -239,9 +245,10 @@
             const message = payload.error || 'El servidor respondió con HTTP ' + response.status + '.';
             const error = new Error(message);
             error.code = payload.code || (response.status === 429 ? 'RATE' : 'API');
+            error.diagnostic = payload.diagnostic;
             throw error;
         }
-        return engine.normalizeAnalysis(payload.analysis);
+        return Object.assign({}, payload.analysis, { provenance: payload.provenance });
     }
 
     function readHistory() {
@@ -415,12 +422,14 @@
                     });
                     source = 'Gemini (' + request.model + ')';
                 } catch (error) {
-                    if (error.code === 'MODEL' || error.code === 'RATE') {
+                    if (['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code)) {
                         showNotice(error.message, 'bad');
                         return;
                     }
                     result = engine.runLocalSimulation(fullText, prefs);
                     source = 'Simulación local (respaldo)';
+                    result.provenance = { ...result.provenance, attemptedModel: request.model, fallbackReason: error.code || 'UNKNOWN', diagnostic: error.diagnostic };
+                    result.recommendations.unshift('Respaldo local: ' + error.code + '. ' + error.message);
                     showNotice(error.message, 'warn');
                 }
             } else {
@@ -428,7 +437,7 @@
             }
             stamp(result, source, prefs, source.indexOf('Gemini (') === 0 ? extra : null);
             renderDashboard(result);
-            await saveAnalysis(fullText, result);
+            try { await saveAnalysis(fullText, result); } catch (saveError) { showNotice('El análisis terminó, pero no se pudo guardar el historial. Puedes exportarlo ahora.', 'warn'); }
         } finally {
             setBusy(false);
         }
@@ -551,12 +560,19 @@
             doc.setTextColor.apply(doc, settings.color || [51, 65, 85]);
             const lines = doc.splitTextToSize(pdfSafe(text), width);
             const lineHeight = size * 0.48;
-            if (y + lines.length * lineHeight > pageHeight - margin) {
+            if (settings.keepNext && y + lines.length * lineHeight + settings.keepNext > pageHeight - margin) {
                 doc.addPage();
                 y = margin;
             }
-            doc.text(lines, margin, y);
-            y += lines.length * lineHeight + (settings.gap == null ? 2 : settings.gap);
+            lines.forEach(function (line) {
+                if (y + lineHeight > pageHeight - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+                doc.text(line, margin, y);
+                y += lineHeight;
+            });
+            y += settings.gap == null ? 2 : settings.gap;
         }
 
         doc.setFillColor(23, 43, 77);
@@ -575,13 +591,16 @@
         if (data.truncated) {
             addParagraph('El modelo solo reviso ' + data.analyzedLength + ' de ' + data.originalLength + ' caracteres.', { gap: 4 });
         }
-        addParagraph('HALLAZGOS', { bold: true, size: 12, color: [23, 43, 77], gap: 3 });
+        engine.traceLines(data).forEach(function (line) { addParagraph(line, { size: 8 }); });
+        addParagraph('HALLAZGOS', { bold: true, size: 12, color: [23, 43, 77], gap: 3, keepNext: 24 });
         (data.alerts || []).forEach(function (alert, index) {
-            addParagraph((index + 1) + '. ' + alert.title + ' [' + String(alert.level || '').toUpperCase() + ']', { bold: true, gap: 1 });
+            addParagraph((index + 1) + '. ' + alert.title + ' [' + String(alert.level || '').toUpperCase() + ']', { bold: true, gap: 1, keepNext: 10 });
             addParagraph(alert.desc || '', { size: 9, gap: 1 });
-            addParagraph('Cita: ' + (alert.excerpt || 'Sin cita textual'), { size: 9, gap: 3 });
+            (alert.evidence || [{ excerpt: alert.excerpt }]).forEach(function (evidence) {
+                addParagraph((evidence.clauseId ? evidence.clauseId + ' · ' : '') + (evidence.statement ? evidence.statement + ' — ' : '') + 'Cita: ' + (evidence.excerpt || 'Sin cita textual'), { size: 9, gap: 3 });
+            });
         });
-        addParagraph('RECOMENDACIONES', { bold: true, size: 12, color: [23, 43, 77], gap: 3 });
+        addParagraph('RECOMENDACIONES', { bold: true, size: 12, color: [23, 43, 77], gap: 3, keepNext: 12 });
         (data.recommendations || []).forEach(function (item, index) {
             addParagraph((index + 1) + '. ' + item, { size: 9, gap: 2 });
         });

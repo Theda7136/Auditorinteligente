@@ -124,10 +124,11 @@ function createAuthStore(filename = 'auditor-inteligente.sqlite') {
     function consumeAnalysisQuota(checks, now, windowMs) {
         db.exec('BEGIN IMMEDIATE');
         try {
-            statements.deleteExpiredAnalysisQuotas.run(now - windowMs);
+            // Retain other quota families for their longest supported window (one hour).
+            statements.deleteExpiredAnalysisQuotas.run(now - Math.max(windowMs, 3600000));
             for (const check of checks) {
                 const current = statements.findAnalysisQuota.get(check.key);
-                if (current && current.count >= check.limit) {
+                if (current && now - current.window_started_at < windowMs && current.count >= check.limit) {
                     db.exec('ROLLBACK');
                     return {
                         allowed: false,
@@ -137,7 +138,7 @@ function createAuthStore(filename = 'auditor-inteligente.sqlite') {
             }
             for (const check of checks) {
                 const current = statements.findAnalysisQuota.get(check.key);
-                if (!current) {
+                if (!current || now - current.window_started_at >= windowMs) {
                     statements.upsertAnalysisQuota.run(check.key, now, 1);
                 } else {
                     statements.upsertAnalysisQuota.run(check.key, current.window_started_at, current.count + 1);
