@@ -689,12 +689,8 @@ body {
         border-radius: 0;
         box-shadow: none;
         border-bottom: 1px solid #d8d9d0;
-        padding: 13px 0;
     }
-    #workspaceHistory .history-open {
-        min-height: 56px;
-        text-align: left;
-    }
+    #workspaceHistory .history-open { min-height: 56px; }
     #workspaceHistory .score-pill { border-radius: 0; }
     #workspaceAccount .fields { gap: 18px; }
     #workspaceAccount .account-actions {
@@ -717,7 +713,6 @@ body {
     }
     #workspaceHistory #clearHistoryBtn { min-height: 44px; }
     #workspaceAccount .account-actions .btn { min-height: 44px; }
-    #workspaceSettings .help-row { grid-template-columns: 1fr; }
 }
 
 /* Fallback is a non-blocking status, not a second page header. */
