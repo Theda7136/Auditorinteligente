@@ -112,6 +112,13 @@
         $('analyzeBtnText').textContent = label || 'Analizar contrato';
     }
 
+    function updateDocumentLength() {
+        const counter = $('contractCharacterCount');
+        if (!counter) return;
+        const length = $('contractText').value.length;
+        counter.textContent = new Intl.NumberFormat('es-CO').format(length) + ' caracteres';
+    }
+
     function renderDashboard(data) {
         currentAnalysis = data;
         renderHybridComparison(data?.hybridComparison);
@@ -163,6 +170,7 @@
         $('alertsCountBadge').textContent = alerts.length + (alerts.length === 1 ? ' alerta' : ' alertas');
         const container = $('alertsContainer');
         container.replaceChildren();
+        updateDocumentLength();
         $('contractText').classList.remove('contract-evidence-active');
         $('selectedClauseIndicator').hidden = true;
         $('selectedClauseIndicator').textContent = '';
@@ -1008,6 +1016,8 @@
         renderHistory();
         installHybridStyles();
         renderDashboard(null);
+        updateDocumentLength();
+        $('contractText').addEventListener('input', updateDocumentLength);
         if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
 
         checkServerStatus();
