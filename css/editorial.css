@@ -351,3 +351,12 @@ body {
 @media print {
     .legal-report .report-section { break-inside: avoid; }
 }
+
+/* Internal diagnostics remain in the DOM for analysis and exports, not the client report. */
+.legal-report .technical-audit-data,
+.legal-report .technical-audit-data[hidden] {
+    display: none !important;
+}
+.legal-report .report-findings {
+    border-top: 1px solid #cdd0c6;
+}
