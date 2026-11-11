@@ -33,8 +33,8 @@
         if (!retryable) return;
         const unavailable = error.diagnostic?.httpStatus === 503;
         $('geminiRetryDescription').textContent = unavailable
-            ? 'El proveedor respondió HTTP 503. Se utilizó el motor local como respaldo. Puedes intentar de nuevo.'
-            : 'El análisis se completó mediante el motor local. Puedes intentar nuevamente con Gemini.';
+            ? 'El servicio de IA no está disponible temporalmente. Realizamos una revisión preliminar con el sistema local.'
+            : 'Realizamos una revisión preliminar con el sistema local. Puedes intentar nuevamente con IA.';
     }
 
     function readPrefs() {
