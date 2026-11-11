@@ -142,7 +142,7 @@
         $('riskScore').textContent = String(data.score);
         $('riskScoreBar').style.width = data.score + '%';
         $('riskLevelLabel').textContent = 'Riesgo ' + engine.riskLabel(data.score).toLowerCase();
-        $('auditSourceTag').textContent = data.source || 'Auditoría';
+        $('auditSourceTag').textContent = 'Análisis completado';
         $('auditTimestampText').textContent = data.date || '';
         const details = engine.traceLines(data);
         const reviewStates = { risk: 'riesgo identificado', not_detected: 'sin riesgo detectado', uncertain: 'requiere revisión' };
