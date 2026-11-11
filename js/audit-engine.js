@@ -517,6 +517,27 @@
             if (!match) return;
             const excerpt = excerptAround(sourceText, match.index, match.text.length);
             if (rule.id === 'liability' && /rec[ií]proc|ambas partes|cada parte/i.test(excerpt)) return;
+            if (rule.id === 'penalty') {
+    const reciprocal = /\brec[ií]proc[ao]s?\b/i.test(excerpt);
+    const limited = /\b(\d+(?:[.,]\d+)?)\s*%\s*total\b/i.exec(excerpt);
+    const provenBreach = /incumplimiento probado/i.test(excerpt);
+    const recurringRate = /\b(?:diari[ao]s?|mensual(?:es)?|cada d[ií]a)\b/i.test(excerpt);
+
+    if (
+        reciprocal &&
+        limited &&
+        Number(limited[1].replace(',', '.')) <= 5 &&
+        provenBreach &&
+        !recurringRate
+    ) return;
+}
+
+if (rule.id === 'renewal') {
+    const priorNotice = /aviso previo/i.test(excerpt);
+    const mutualOpposition = /derecho de oposici[oó]n de ambas partes/i.test(excerpt);
+
+    if (priorNotice && mutualOpposition) return;
+}
             if (/\bno (?:existe|habr[aá]|se admite)\s*$/i.test(sourceText.slice(Math.max(0, match.index - 30), match.index))) return;
             const extra = rule.extra ? rule.extra(excerpt) : { score: 0, level: null };
             const factor = partyFactor(rule.id, party, excerpt);
