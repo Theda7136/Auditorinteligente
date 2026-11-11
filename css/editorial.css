@@ -286,3 +286,68 @@ body {
 @media screen and (min-width: 1181px) {
     #workspaceAudit > .stack { z-index: 2; }
 }
+
+/* Editorial report hierarchy replaces nested dashboard cards. */
+.legal-report { background: #fcfbf7; }
+.legal-report .report-heading {
+    padding-bottom: 17px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #c8c9c0;
+}
+.legal-report .report-heading h2 { font-size: 1.9rem; }
+.legal-report .report-section {
+    margin: 0;
+    padding: 24px 0;
+    border-top: 1px solid #cdd0c6;
+}
+.legal-report .report-overview { border-top: 0; padding-top: 12px; }
+.legal-report .report-section-label {
+    margin-bottom: 15px;
+    color: #777666;
+    font: 500 .66rem "DM Mono", Consolas, monospace;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+.legal-report .report-section > h3,
+.legal-report .report-section > .row h3,
+.legal-report .report-section .recs h3 {
+    font: 500 1.4rem "Newsreader", Georgia, serif;
+    letter-spacing: -.02em;
+}
+.legal-report .report-section .recs {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+.legal-report #auditModePanel {
+    border: 0;
+    border-top: 1px solid #d8d9d0;
+    background: transparent;
+    padding: 14px 0 0;
+    margin: 16px 0 0;
+}
+.legal-report #hybridPanel { padding-top: 24px; }
+.legal-report #alertsContainer { gap: 0; }
+.legal-report .finding-card {
+    border: 0;
+    border-top: 1px solid #d3d6cc;
+    border-radius: 0;
+    padding: 19px 12px 19px 15px;
+    background: transparent;
+    box-shadow: none;
+}
+.legal-report .finding-card:last-child { border-bottom: 1px solid #d3d6cc; }
+.legal-report .finding-card.high,
+.legal-report .finding-card.critical { border-left: 2px solid #a04435; }
+.legal-report .finding-card.low { border-left: 2px solid #6b806b; }
+.legal-report .finding-card.is-selected {
+    background: #f2eee3;
+    box-shadow: inset 0 0 0 1px #b7a47d;
+}
+.legal-report .finding-quote { margin-top: 12px; }
+.legal-report .report-recommendations li { border-bottom: 1px solid #d8d9d0; }
+.legal-report .export-row { border-top: 1px solid #cdd0c6; padding-top: 20px; }
+@media print {
+    .legal-report .report-section { break-inside: avoid; }
+}
