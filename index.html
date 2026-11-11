@@ -61,7 +61,7 @@
                 <section class="card">
                     <div class="row">
                         <h2>Documento</h2>
-                        <span class="muted">TXT, PDF o DOCX</span>
+                        <span class="document-formats">TXT · PDF · DOCX</span>
                     </div>
                     <div class="fields">
                         <div>
@@ -116,6 +116,10 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
 4. TERMINACIÓN: El CLIENTE podrá dar por terminado el contrato unilateralmente con 15 días de anticipación sin responsabilidad alguna.
 
 5. RESPONSABILIDAD: El PROVEEDOR solo será responsable por daños directos hasta el monto de una cuota mensual, excluyendo daños indirectos o consecuenciales.</textarea>
+                    <div class="editor-meta">
+                        <span id="contractCharacterCount" aria-live="off">Extensión del documento</span>
+                        <span>Selecciona un hallazgo para localizar su cita</span>
+                    </div>
                     <div class="actions">
                         <button id="uploadBtn" class="btn" type="button">Subir archivo</button>
                         <div class="actions-right">
@@ -138,7 +142,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                 <div id="emptyState" class="empty">
                     <div class="empty-symbol" aria-hidden="true">▤</div>
                     <h3>Tu análisis comienza aquí</h3>
-                    <p>Selecciona el tipo de contrato, revisa el texto y pulsa <strong>Analizar contrato</strong>. Aquí encontrarás los riesgos, las citas y las recomendaciones.</p>
+                    <p>Revisa el documento y selecciona <strong>Analizar contrato</strong>. El informe mostrará los riesgos, sus citas y las acciones sugeridas.</p>
                 </div>
                 <div id="resultsBody" hidden>
                     <section class="report-section report-overview" aria-label="Evaluación general">
