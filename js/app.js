@@ -165,6 +165,7 @@
         $('alertsCountBadge').textContent = alerts.length + (alerts.length === 1 ? ' alerta' : ' alertas');
         const container = $('alertsContainer');
         container.replaceChildren();
+        $('contractText').classList.remove('contract-evidence-active');
         alerts.forEach(function (alert) {
             const button = document.createElement('button');
             button.type = 'button';
@@ -207,7 +208,15 @@
                 button.append(quote);
             });
 
-            button.addEventListener('click', function () { revealExcerpt(alert); });
+            button.addEventListener('click', function () {
+                container.querySelectorAll('.finding-card.is-selected').forEach(function (card) {
+                    card.classList.remove('is-selected');
+                    card.removeAttribute('aria-pressed');
+                });
+                button.classList.add('is-selected');
+                button.setAttribute('aria-pressed', 'true');
+                revealExcerpt(alert);
+            });
             container.append(button);
         });
 
@@ -367,6 +376,7 @@
             if (index >= 0) {
                 area.focus();
                 area.setSelectionRange(index, index + needle.length);
+                area.classList.add('contract-evidence-active');
                 showNotice('');
                 return;
             }
