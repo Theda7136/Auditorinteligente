@@ -143,16 +143,15 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     <div id="riskCard" class="risk-card" data-band="low">
                         <header>
                             <span class="muted">Puntuación de riesgo</span>
-                            <span class="muted">0–100</span>
+                            <span class="muted">Escala de 0 a 100</span>
                         </header>
-                        <div class="meter-row">
-                            <div class="meter" aria-hidden="true"><span id="riskScoreBar"></span></div>
+                        <div class="risk-summary">
                             <span id="riskScore" class="score-num">0</span>
-                        </div>
-                        <div class="row">
+                            <span class="risk-scale">/ 100</span>
                             <strong id="riskLevelLabel">Riesgo</strong>
-                            <span id="auditTimestampText" class="muted"></span>
                         </div>
+                        <div class="meter" aria-hidden="true"><span id="riskScoreBar"></span></div>
+                        <span id="auditTimestampText" class="risk-timestamp muted"></span>
                     </div>
                     <p id="contextLine" class="muted"></p>
                     <div class="technical-audit-data" hidden aria-hidden="true">
@@ -160,7 +159,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                     <p id="truncationNote" class="notice warn" hidden></p>
                     </section>
-                    <section id="auditModePanel" class="recs" hidden>
+                    <section id="auditModePanel" class="recs technical-audit-data" hidden aria-hidden="true">
                         <h3 id="auditModeTitle"></h3>
                         <p id="auditModeDescription" class="muted"></p>
                     </section>
