@@ -390,3 +390,18 @@ body {
     color: #28332d;
     line-height: 1.65;
 }
+
+.legal-report .recommendation-reference {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 0;
+    border: 0;
+    border-bottom: 1px solid #8b7754;
+    border-radius: 0;
+    background: transparent;
+    color: #655234;
+    font: 600 .76rem "IBM Plex Sans", sans-serif;
+    cursor: pointer;
+}
+.legal-report .recommendation-reference:hover { color: #2d342e; }
+.legal-report .recommendation-reference:focus-visible { outline: 2px solid #8b7754; outline-offset: 3px; }
