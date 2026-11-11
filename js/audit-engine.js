@@ -110,7 +110,8 @@
                         level: { type: 'STRING', enum: ['high', 'medium', 'low'] },
                         title: { type: 'STRING' },
                         desc: { type: 'STRING' },
-                        excerpt: { type: 'STRING', description: 'Cita literal breve del contrato' }
+                        excerpt: { type: 'STRING', description: 'Cita literal breve del contrato' },
+                        recommendation: { type: 'STRING', description: 'Recomendación concreta vinculada a este hallazgo; debe aparecer idéntica en recommendations' }
                     },
                     required: ['level', 'title', 'desc', 'excerpt']
                 }
@@ -680,6 +681,7 @@ if (rule.id === 'renewal') {
             'Cada alerta aborda una categoría. Incluye claims: una afirmación concreta por elemento, su excerpt literal suficiente y clauseId de su unidad. Si afirmas dos condiciones, cita cada condición; no uses la cita del plazo de pago como prueba de retención.',
             'PROHIBIDO abreviar citas con ... o …, unir frases no contiguas, cambiar palabras o normalizar saltos de línea. Usa citas cortas contiguas exactas. Divide condiciones separadas en claims distintos; cada statement solo afirma lo respaldado por su excerpt.',
             'La descripción debe limitarse a las afirmaciones respaldadas. No afirmes beneficios o perjuicios para una parte sin identificar la obligación correspondiente. Incluye excerpt con la primera cita literal y desc como resumen de claims.',
+            'Cuando propongas una acción específica para una alerta, incluye recommendation en esa alerta y repite exactamente el mismo texto en recommendations. No vincules recomendaciones generales a una alerta concreta.',
             'Todo risk en coverage o clauseReviews debe tener alerta y evidencia correspondientes. No declares not_detected si sí describes un riesgo en recomendaciones.',
             'Si el texto vino recortado, limita el dictamen a lo que sí recibiste y dilo en una recomendación.',
             'Adapta las recomendaciones a la jurisdicción indicada, sin inventar artículos que no correspondan.'
