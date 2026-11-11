@@ -216,6 +216,11 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                     <p class="muted">En modo invitado el historial queda en este navegador. Con sesión iniciada, se
                         guarda en tu cuenta un extracto y el dictamen; nunca el contrato completo.</p>
+                    <div class="history-tools">
+                        <div><label for="historySearch">Buscar análisis</label><input id="historySearch" type="search" placeholder="Nombre del contrato o fecha"></div>
+                        <div><label for="historyRiskFilter">Nivel de riesgo</label><select id="historyRiskFilter"><option value="all">Todos los niveles</option><option value="high">Alto o crítico</option><option value="medium">Medio</option><option value="low">Bajo</option></select></div>
+                    </div>
+                    <p id="historyFilterStatus" class="history-filter-status muted" role="status"></p>
                     <div id="historyList" class="history"></div>
                 </section></div>
         <div class="workspace-view" data-view="settings"><details id="workspaceSettings" open class="card no-print connection-card">
@@ -225,6 +230,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                                 aria-hidden="true">⌄</span></span>
                     </summary>
                     <div class="config-body">
+                        <h3 class="settings-section-heading">Conexión de IA</h3>
                         <div class="help-row">
                             <div class="model-field">
                                 <label for="modelSelect">Modelo</label>
@@ -238,6 +244,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <p class="muted connection-note">«Actualizar estado» consulta la configuración del servidor; no realiza una solicitud a Gemini ni verifica su cuota. El último resultado real se muestra después de analizar un contrato.</p>
                         <p class="muted">La conexión con Gemini se gestiona desde el servidor. El contrato solo se envía
                             al proveedor si confirmas el envío. La clave de servicio no se expone al navegador.</p>
+                        <h3 class="settings-section-heading">Prioridades de revisión</h3>
                         <div class="priorities">
                             <div>
                                 <label for="priorityFinancial">Riesgo financiero</label>
@@ -272,6 +279,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                                 </select>
                             </div>
                         </div>
+                        <h3 class="settings-section-heading">Privacidad y almacenamiento</h3>
                         <label class="checkline" for="storeFullText">
                             <input id="storeFullText" type="checkbox">
                             Guardar el texto completo del contrato en este navegador
@@ -299,7 +307,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     <button id="registerBtn" class="btn" type="button">Crear cuenta</button>
                 </div>
             </div>
-            <div id="accountSession" hidden>
+            <div id="accountSession" class="account-session" hidden>
                 <p class="muted">Sesión iniciada como <strong id="accountEmail"></strong>. Tu historial se guarda en
                     esta cuenta.</p>
                 <button id="logoutBtn" class="btn ghost" type="button">Cerrar sesión</button>
