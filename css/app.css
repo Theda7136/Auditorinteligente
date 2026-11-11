@@ -219,3 +219,19 @@ details[open] .chevron { transform: rotate(180deg); }
 .risk-card, .alert, .recs, .tag { overflow-wrap: anywhere; }
 .score-num { flex-shrink: 0; }
 #auditSourceTag { max-width: 100%; white-space: normal; }
+
+/* Connection settings: keep collapsed cards compact inside the grid. */
+.stack { align-content: start; }
+.connection-card { align-self: start; }
+.connection-card > summary { min-height: 24px; }
+.connection-card .config-body { padding-top: 18px; }
+.connection-card .help-row { align-items: end; flex-wrap: wrap; }
+.connection-card .connection-status { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.connection-card #serverStatus { max-width: 310px; line-height: 1.5; }
+.connection-card .connection-note { margin: 12px 0; }
+.connection-card .btn.secondary { white-space: nowrap; }
+.connection-card[open] { height: auto; }
+@media (max-width: 600px) {
+    .connection-card .help-row { display: grid; }
+    .connection-card .model-field { min-width: 0; }
+}

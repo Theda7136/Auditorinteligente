@@ -65,12 +65,32 @@
         $('storeFullText').checked = Boolean(prefs.storeFullText);
     }
 
+    let lastGeminiError = null;
+
     function updateConnectionBadge() {
-        const ready = window.geminiAvailable === true;
+        const configured = window.geminiAvailable === true;
         const badge = $('statusBadge');
-        $('configStatusText').textContent = ready ? 'Gemini configurado' : 'Modo local';
-        $('statusText').textContent = ready ? 'Gemini configurado; conexión sin verificar' : 'Modo local';
-        badge.classList.toggle('live', ready);
+        const label = !configured
+            ? 'Modo local'
+            : lastGeminiError
+                ? 'Gemini: último intento fallido'
+                : 'Gemini configurado · sin verificar';
+
+        $('configStatusText').textContent = label;
+        $('statusText').textContent = label;
+        badge.classList.toggle('live', configured && !lastGeminiError);
+    }
+
+    function recordGeminiError(error) {
+        lastGeminiError = error;
+        const unavailable = error.diagnostic?.httpStatus === 503;
+        const limited = error.code === 'RATE' || error.code === 'QUOTA' || error.diagnostic?.httpStatus === 429;
+        $('serverStatus').textContent = unavailable
+            ? 'Último análisis: proveedor no disponible (HTTP 503). Motor local disponible.'
+            : limited
+                ? 'Último análisis: límite de solicitudes o cuota. Revisa tu plan de Gemini.'
+                : 'Último análisis: error de Gemini (' + (error.code || 'API') + '). Motor local disponible.';
+        updateConnectionBadge();
     }
 
     function setBusy(isBusy, label) {
@@ -82,6 +102,24 @@
 
     function renderDashboard(data) {
         currentAnalysis = data;
+        renderHybridComparison(data?.hybridComparison);
+        const modePanel = $('auditModePanel');
+        const modeTitle = $('auditModeTitle');
+        const modeDescription = $('auditModeDescription');
+
+        modePanel.hidden = !data;
+
+        if (data) {
+            const isHybrid = Boolean(data.hybridComparison);
+
+            modeTitle.textContent = isHybrid
+                ? 'Análisis híbrido completado'
+                : 'Análisis local completado';
+
+            modeDescription.textContent = isHybrid
+                ? 'Gemini y el motor local analizaron el contrato.'
+                : 'El contrato fue revisado mediante reglas locales. La comparación híbrida no está disponible en esta ejecución.';
+        }
         const hasResult = Boolean(data);
         $('emptyState').hidden = hasResult;
         $('resultsBody').hidden = !hasResult;
@@ -142,6 +180,109 @@
             item.textContent = recommendation;
             list.append(item);
         });
+    }
+
+    function renderHybridComparison(comparison) {
+        const panel = $('hybridPanel');
+        const summary = $('hybridSummary');
+        const container = $('hybridFindings');
+
+        if (!panel || !summary || !container) return;
+
+        panel.hidden = !comparison;
+        container.replaceChildren();
+        if (!comparison) return;
+
+        const agreements = comparison.agreements || [];
+        const localOnly = comparison.localOnly || [];
+        const geminiOnly = comparison.geminiOnly || [];
+
+        summary.textContent = `${agreements.length} coincidencias · ${localOnly.length} solo local · ${geminiOnly.length} solo Gemini`;
+
+        function addGroup(label, findings, tone, getFinding) {
+            if (!findings.length) return;
+
+            const group = document.createElement('section');
+            group.className = 'hybrid-group';
+
+            const heading = document.createElement('h4');
+            heading.className = 'hybrid-group-title';
+            heading.textContent = `${label} (${findings.length})`;
+            group.append(heading);
+
+            findings.forEach(function (entry) {
+                const finding = getFinding(entry);
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = `hybrid-finding hybrid-${tone}`;
+
+                const title = document.createElement('strong');
+                title.className = 'hybrid-finding-title';
+                title.textContent = finding.title || finding.category || 'Hallazgo';
+                card.append(title);
+
+                const clauseIds = entry.clauseIds || finding.clauseIds || [];
+                const clauseId = entry.clauseId || finding.clauseId || clauseIds.join(', ');
+                const excerpt = finding.excerpt || '';
+
+                if (excerpt) {
+                    const quote = document.createElement('span');
+                    quote.className = 'hybrid-finding-quote';
+                    quote.textContent = (clauseId ? clauseId + ' · ' : '') + excerpt;
+                    card.append(quote);
+                    card.addEventListener('click', function () {
+                        revealExcerpt(finding);
+                    });
+                } else {
+                    card.disabled = true;
+                }
+
+                group.append(card);
+            });
+
+            container.append(group);
+        }
+
+        addGroup('Coincidencias', agreements, 'agreement', function (entry) {
+            return entry.gemini || entry.local || {};
+        });
+        addGroup('Solo motor local', localOnly, 'local', function (entry) {
+            return entry;
+        });
+        addGroup('Solo Gemini', geminiOnly, 'gemini', function (entry) {
+            return entry;
+        });
+    }
+
+    function installHybridStyles() {
+        if (document.getElementById('hybrid-panel-styles')) return;
+
+        const styles = document.createElement('style');
+        styles.id = 'hybrid-panel-styles';
+        styles.textContent = `
+            #hybridPanel { min-width: 0; }
+            #hybridSummary { display: block; font-size: .88rem; line-height: 1.5; overflow-wrap: anywhere; }
+            #hybridFindings { display: grid; gap: 16px; max-height: none; overflow: visible; min-width: 0; }
+            #hybridPanel .hybrid-group { display: grid; gap: 9px; min-width: 0; }
+            #hybridPanel .hybrid-group-title { margin: 0; font-size: .88rem; color: #334155; }
+            #hybridPanel .hybrid-finding {
+                display: flex; flex-direction: column; align-items: stretch; gap: 7px;
+                width: 100%; min-width: 0; box-sizing: border-box;
+                padding: 13px 14px; margin: 0; border: 1px solid #dbe3ee;
+                border-left: 4px solid #64748b; border-radius: 10px;
+                background: #f8fafc; color: #172b4d; text-align: left;
+                font: inherit; line-height: 1.45; white-space: normal;
+                overflow-wrap: anywhere; cursor: pointer;
+            }
+            #hybridPanel .hybrid-finding:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+            #hybridPanel .hybrid-finding:disabled { cursor: default; opacity: 1; }
+            #hybridPanel .hybrid-finding-title { display: block; font-size: .9rem; line-height: 1.4; }
+            #hybridPanel .hybrid-finding-quote { display: block; font-size: .82rem; color: #475569; }
+            #hybridPanel .hybrid-agreement { border-left-color: #0f766e; background: #f0fdfa; }
+            #hybridPanel .hybrid-local { border-left-color: #b45309; background: #fffbeb; }
+            #hybridPanel .hybrid-gemini { border-left-color: #4f46e5; background: #eef2ff; }
+        `;
+        document.head.append(styles);
     }
 
     function revealExcerpt(alert) {
@@ -213,7 +354,9 @@
             const status = await response.json();
             window.geminiAvailable = response.ok && status.gemini === true;
             $('serverStatus').textContent = window.geminiAvailable
-                ? 'Gemini configurado'
+                ? lastGeminiError
+                    ? 'Gemini configurado; último intento fallido. Actualizar estado no prueba el proveedor.'
+                    : 'API configurada en el servidor. Disponibilidad de Gemini sin verificar.'
                 : 'Gemini no configurado; análisis local disponible';
         } catch (error) {
             window.geminiAvailable = false;
@@ -248,7 +391,10 @@
             error.diagnostic = payload.diagnostic;
             throw error;
         }
-        return Object.assign({}, payload.analysis, { provenance: payload.provenance });
+        return Object.assign({}, payload.analysis, {
+            provenance: payload.provenance,
+            hybridComparison: payload.hybridComparison || null
+        });
     }
 
     function readHistory() {
@@ -421,7 +567,11 @@
                         priorities: prefs.priorities
                     });
                     source = 'Gemini (' + request.model + ')';
+                    lastGeminiError = null;
+                    $('serverStatus').textContent = 'Último análisis con Gemini: completado correctamente.';
+                    updateConnectionBadge();
                 } catch (error) {
+                    recordGeminiError(error);
                     if (['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code)) {
                         showNotice(error.message, 'bad');
                         return;
@@ -687,10 +837,28 @@
         loadPrefs();
         updateConnectionBadge();
         renderHistory();
+        installHybridStyles();
         renderDashboard(null);
         if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER;
 
         checkServerStatus();
+        $('refreshConnectionBtn')?.addEventListener('click', async function () {
+            const button = $('refreshConnectionBtn');
+            const statusText = $('serverStatus');
+
+            button.disabled = true;
+            button.textContent = 'Comprobando…';
+            statusText.textContent = 'Consultando el estado del servidor…';
+
+            try {
+                await checkServerStatus();
+                statusText.textContent +=
+                    ' · Actualizado a las ' + new Date().toLocaleTimeString('es-CO');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Actualizar estado';
+            }
+        });
         initializeAuth();
         $('loginBtn').addEventListener('click', function () { submitAuth('login'); });
         $('registerBtn').addEventListener('click', function () { submitAuth('register'); });

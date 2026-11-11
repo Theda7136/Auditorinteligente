@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisión de contratos</title>
-    <link rel="stylesheet" href="css/app.css?v=ui-v6">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8p5o2ATD5ZLUQGFe8cTN5g8Y0cqXx6V6Jmt0MpFRQJvA4Bsk0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" integrity="sha512-2BI6f/i3GcWAfYQLMDOJ6kd6u3oWRHyuNowAump5D8ZJPSxHI5CdIjy4JNrDMSJXpe5iVNQvmlLdOI1GDK3TUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="css/app.css?v=ui-v7">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"
+        integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8p5o2ATD5ZLUQGFe8cTN5g8Y0cqXx6V6Jmt0MpFRQJvA4Bsk0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"
+        integrity="sha512-2BI6f/i3GcWAfYQLMDOJ6kd6u3oWRHyuNowAump5D8ZJPSxHI5CdIjy4JNrDMSJXpe5iVNQvmlLdOI1GDK3TUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 </head>
+
 <body>
     <input id="hiddenFileInput" class="hidden" type="file" accept=".txt,.pdf,.docx">
     <div class="wrap">
         <header class="topbar">
             <div>
                 <h1>
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 7h8M8 11h8M8 15h5M6 3h8l4 4v14H6z"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M8 7h8M8 11h8M8 15h5M6 3h8l4 4v14H6z" />
+                    </svg>
                     Revisión de contratos
                 </h1>
                 <p>Dictamen de riesgos para negociar. No sustituye a un abogado.</p>
@@ -40,7 +51,8 @@
                 </div>
                 <div>
                     <label for="authPassword">Contraseña</label>
-                    <input id="authPassword" type="password" autocomplete="current-password" minlength="10" maxlength="128" placeholder="Mínimo 10 caracteres">
+                    <input id="authPassword" type="password" autocomplete="current-password" minlength="10"
+                        maxlength="128" placeholder="Mínimo 10 caracteres">
                 </div>
                 <div class="account-actions">
                     <button id="loginBtn" class="btn accent" type="button">Iniciar sesión</button>
@@ -48,10 +60,12 @@
                 </div>
             </div>
             <div id="accountSession" hidden>
-                <p class="muted">Sesión iniciada como <strong id="accountEmail"></strong>. Tu historial se guarda en esta cuenta.</p>
+                <p class="muted">Sesión iniciada como <strong id="accountEmail"></strong>. Tu historial se guarda en
+                    esta cuenta.</p>
                 <button id="logoutBtn" class="btn ghost" type="button">Cerrar sesión</button>
             </div>
-            <p id="authMessage" class="muted" role="status">Puedes analizar sin cuenta. Inicia sesión para guardar tu historial de forma privada en este servidor.</p>
+            <p id="authMessage" class="muted" role="status">Puedes analizar sin cuenta. Inicia sesión para guardar tu
+                historial de forma privada en este servidor.</p>
         </section>
 
         <div class="layout">
@@ -97,7 +111,8 @@
                         </div>
                     </div>
                     <label for="contractText">Texto del contrato</label>
-                    <textarea id="contractText">CONTRATO DE PRESTACIÓN DE SERVICIOS
+                    <textarea
+                        id="contractText">CONTRATO DE PRESTACIÓN DE SERVICIOS
 
 ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR], en adelante "EL PROVEEDOR".
 
@@ -122,10 +137,11 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                     </div>
                 </section>
 
-                <details class="card no-print">
+                <details class="card no-print connection-card">
                     <summary>
                         <span>Conexión y prioridades</span>
-                        <span class="muted"><span id="configStatusText">Modo local</span> <span class="chevron" aria-hidden="true">⌄</span></span>
+                        <span class="muted"><span id="configStatusText">Modo local</span> <span class="chevron"
+                                aria-hidden="true">⌄</span></span>
                     </summary>
                     <div class="config-body">
                         <div class="help-row">
@@ -133,25 +149,46 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                                 <label for="modelSelect">Modelo</label>
                                 <select id="modelSelect"></select>
                             </div>
-                            <span id="serverStatus" class="muted">Comprobando servidor…</span>
+                            <div class="connection-status" role="status" aria-live="polite">
+                                <span id="serverStatus" class="muted">Comprobando servidor…</span>
+                                <button id="refreshConnectionBtn" class="btn secondary" type="button">Actualizar estado</button>
+                            </div>
                         </div>
-                        <p class="muted">La conexión con Gemini se gestiona desde el servidor. El contrato solo se envía al proveedor si confirmas el envío. La clave de servicio no se expone al navegador.</p>
+                        <p class="muted connection-note">«Actualizar estado» consulta la configuración del servidor; no realiza una solicitud a Gemini ni verifica su cuota. El último resultado real se muestra después de analizar un contrato.</p>
+                        <p class="muted">La conexión con Gemini se gestiona desde el servidor. El contrato solo se envía
+                            al proveedor si confirmas el envío. La clave de servicio no se expone al navegador.</p>
                         <div class="priorities">
                             <div>
                                 <label for="priorityFinancial">Riesgo financiero</label>
-                                <select id="priorityFinancial"><option value="alta">Alta</option><option value="media" selected>Media</option><option value="baja">Baja</option></select>
+                                <select id="priorityFinancial">
+                                    <option value="alta">Alta</option>
+                                    <option value="media" selected>Media</option>
+                                    <option value="baja">Baja</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="priorityAbusive">Cláusulas abusivas</label>
-                                <select id="priorityAbusive"><option value="alta" selected>Alta</option><option value="media">Media</option><option value="baja">Baja</option></select>
+                                <select id="priorityAbusive">
+                                    <option value="alta" selected>Alta</option>
+                                    <option value="media">Media</option>
+                                    <option value="baja">Baja</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="priorityPenalties">Fechas y penalizaciones</label>
-                                <select id="priorityPenalties"><option value="alta" selected>Alta</option><option value="media">Media</option><option value="baja">Baja</option></select>
+                                <select id="priorityPenalties">
+                                    <option value="alta" selected>Alta</option>
+                                    <option value="media">Media</option>
+                                    <option value="baja">Baja</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="priorityCompliance">Cumplimiento y ley aplicable</label>
-                                <select id="priorityCompliance"><option value="alta" selected>Alta</option><option value="media">Media</option><option value="baja">Baja</option></select>
+                                <select id="priorityCompliance">
+                                    <option value="alta" selected>Alta</option>
+                                    <option value="media">Media</option>
+                                    <option value="baja">Baja</option>
+                                </select>
                             </div>
                         </div>
                         <label class="checkline" for="storeFullText">
@@ -166,7 +203,8 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <h2>Historial <span id="historyCountBadge" class="count">0</span></h2>
                         <button id="clearHistoryBtn" class="btn danger" type="button">Limpiar historial</button>
                     </div>
-                    <p class="muted">En modo invitado el historial queda en este navegador. Con sesión iniciada, se guarda en tu cuenta un extracto y el dictamen; nunca el contrato completo.</p>
+                    <p class="muted">En modo invitado el historial queda en este navegador. Con sesión iniciada, se
+                        guarda en tu cuenta un extracto y el dictamen; nunca el contrato completo.</p>
                     <div id="historyList" class="history"></div>
                 </section>
             </div>
@@ -200,6 +238,23 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <div id="analysisDetailsText"></div>
                     </details>
                     <p id="truncationNote" class="notice warn" hidden></p>
+                    <section id="auditModePanel" class="recs" hidden>
+                        <h3 id="auditModeTitle"></h3>
+                        <p id="auditModeDescription" class="muted"></p>
+                    </section>
+                    <section id="hybridPanel" class="recs" hidden>
+                        <h3>Comparación de motores</h3>
+                        <p class="muted">
+                            Coincidencias y diferencias entre Gemini y el motor local.
+                            La coincidencia no garantiza que un hallazgo sea jurídicamente correcto.
+                        </p>
+
+                        <div class="row">
+                            <strong id="hybridSummary"></strong>
+                        </div>
+
+                        <div id="hybridFindings" class="alerts"></div>
+                    </section>
                     <div class="row">
                         <h3>Hallazgos</h3>
                         <span id="alertsCountBadge" class="count">0</span>
@@ -209,7 +264,8 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         <h3>Recomendaciones</h3>
                         <ul id="recommendationsList"></ul>
                     </div>
-                    <p class="muted">Pulsa un hallazgo para localizar la cita en el texto. Esto no es un dictamen legal.</p>
+                    <p class="muted">Pulsa un hallazgo para localizar la cita en el texto. Esto no es un dictamen legal.
+                    </p>
                     <div class="export-row">
                         <button id="exportPdfBtn" class="btn" type="button" disabled>Exportar PDF</button>
                         <button id="exportTxtBtn" class="btn secondary" type="button" disabled>Descargar TXT</button>
@@ -221,14 +277,16 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
 
     <dialog id="consentDialog" class="dialog">
         <h3>El contrato saldrá de este navegador</h3>
-        <p>Gemini recibirá el texto, el tipo de contrato, la jurisdicción, la parte que representas y las prioridades. Google procesa ese contenido con su propia política. La clave no viaja en la dirección de la solicitud.</p>
+        <p>Gemini recibirá el texto, el tipo de contrato, la jurisdicción, la parte que representas y las prioridades.
+            Google procesa ese contenido con su propia política. La clave no viaja en la dirección de la solicitud.</p>
         <div class="actions-right">
             <button id="consentDecline" class="btn secondary" type="button">Analizar solo en local</button>
             <button id="consentAccept" class="btn accent" type="button">Enviar a Gemini</button>
         </div>
     </dialog>
 
-    <script src="js/audit-engine.js?v=ui-v6"></script>
-    <script src="js/app.js?v=ui-v6"></script>
+    <script src="js/audit-engine.js?v=ui-v7"></script>
+    <script src="js/app.js?v=ui-v7"></script>
 </body>
+
 </html>

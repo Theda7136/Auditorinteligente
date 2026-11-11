@@ -5,6 +5,7 @@ const net = require('node:net');
 const fs = require('node:fs');
 const path = require('node:path');
 const engine = require('./js/audit-engine.js');
+const { compareAnalyses } = require('./js/hybrid-evaluator.js');
 const crypto = require('node:crypto');
 const { createAuthStore } = require('./auth-store.js');
 
@@ -411,11 +412,28 @@ async function analyzeContract(payload, repairData = null) {
     try {
         const cleaned = rawText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '');
         parsed = JSON.parse(cleaned);
-        return {
-            status: 200,
-            body: {
-                analysis: engine.validateComprehensiveAnalysis(parsed, contractText.slice(0, request.analyzedLength), payload),
-                provenance: { engine: 'gemini', model: request.model, analysisId: crypto.randomUUID(), generatedAt: new Date().toISOString(), inputSha256: crypto.createHash('sha256').update(contractText).digest('hex'), version: 'gemini-review-v5', correctionAttempts: repairData ? 1 : 0 },
+        const analyzedText = contractText.slice(0, request.analyzedLength);
+
+const geminiAnalysis = engine.validateComprehensiveAnalysis(
+    parsed,
+    analyzedText,
+    payload
+);
+
+const localAnalysis = engine.runLocalSimulation(analyzedText, payload);
+
+const hybridComparison = compareAnalyses(
+    analyzedText,
+    localAnalysis,
+    geminiAnalysis
+);
+
+return {
+    status: 200,
+    body: {
+        analysis: geminiAnalysis,
+        hybridComparison,
+        provenance: { engine: 'gemini', model: request.model, analysisId: crypto.randomUUID(), generatedAt: new Date().toISOString(), inputSha256: crypto.createHash('sha256').update(contractText).digest('hex'), version: 'gemini-review-v5', correctionAttempts: repairData ? 1 : 0 },
                 model: request.model,
                 truncated: request.truncated,
                 originalLength: request.originalLength,

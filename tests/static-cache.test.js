@@ -5,7 +5,7 @@ test('HTML y archivos versionados no reutilizan la interfaz anterior',async()=>{
  const server=createServer({dbPath:':memory:'});
  const handler=server.listeners('request')[0];
  try {
-  for(const url of ['/', '/js/app.js?v=ui-v6','/js/audit-engine.js?v=ui-v6','/css/app.css?v=ui-v6']){
+  for(const url of ['/', '/js/app.js?v=ui-v7','/js/audit-engine.js?v=ui-v7','/css/app.css?v=ui-v7']){
    const response=await new Promise((resolve,reject)=>{
     const headers={};let status=0;
     handler({url,method:'GET',headers:{},socket:{}},{setHeader(k,v){headers[k]=v;},writeHead(s,h){status=s;Object.assign(headers,h);},end(body){resolve({status,headers,body:String(body)});}}).catch(reject);
@@ -13,8 +13,8 @@ test('HTML y archivos versionados no reutilizan la interfaz anterior',async()=>{
    assert.equal(response.status,200);
    assert.equal(response.headers['Cache-Control'],'no-store');
    if(url==='/'){
-    assert.match(response.body,/css\/app\.css\?v=ui-v6/);
-    assert.match(response.body,/js\/app\.js\?v=ui-v6/);
+    assert.match(response.body,/css\/app\.css\?v=ui-v7/);
+    assert.match(response.body,/js\/app\.js\?v=ui-v7/);
    }
   }
  }finally{server.emit('close');}
