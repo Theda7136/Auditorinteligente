@@ -67,6 +67,7 @@ function createAuthStore(filename = 'auditor-inteligente.sqlite') {
             FROM analyses WHERE user_id = ? ORDER BY id DESC LIMIT 50`),
         findAnalysis: db.prepare('SELECT id FROM analyses WHERE id = ? AND user_id = ?'),
         deleteAnalysis: db.prepare('DELETE FROM analyses WHERE id = ? AND user_id = ?'),
+        renameAnalysis: db.prepare('UPDATE analyses SET title = ? WHERE id = ? AND user_id = ?'),
         clearAnalyses: db.prepare('DELETE FROM analyses WHERE user_id = ?'),
         findAnalysisQuota: db.prepare('SELECT window_started_at, count FROM analysis_quotas WHERE quota_key = ?'),
         deleteExpiredAnalysisQuotas: db.prepare('DELETE FROM analysis_quotas WHERE window_started_at <= ?'),
@@ -172,6 +173,7 @@ function createAuthStore(filename = 'auditor-inteligente.sqlite') {
     return {
         register, authenticate, createSession, getSession, destroySession,
         saveAnalysis, listAnalyses, consumeAnalysisQuota, resetAnalysisQuota,
+        renameAnalysis: (id, userId, title) => statements.renameAnalysis.run(title, id, userId).changes > 0,
         deleteAnalysis: (id, userId) => statements.deleteAnalysis.run(id, userId).changes > 0,
         clearAnalyses: userId => statements.clearAnalyses.run(userId).changes,
         close: () => db.close()
