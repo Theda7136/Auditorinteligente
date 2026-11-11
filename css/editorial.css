@@ -442,3 +442,48 @@ body {
         transition-duration: .01ms !important;
     }
 }
+
+/* Risk summary: one reading order for score, severity and confidence context. */
+.legal-report .risk-card {
+    padding: 22px 24px 20px;
+}
+.legal-report .risk-summary {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 15px 0 17px;
+}
+.legal-report .risk-summary .score-num {
+    font-size: clamp(3rem, 5vw, 4.2rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.legal-report .risk-scale {
+    color: #d2d0c4;
+    font: 400 .9rem "DM Mono", Consolas, monospace;
+}
+.legal-report .risk-summary #riskLevelLabel {
+    margin-left: auto;
+    font-size: .96rem;
+    color: #fffdf5;
+}
+.legal-report .risk-card > .meter {
+    width: 100%;
+    margin-bottom: 14px;
+}
+.legal-report .risk-timestamp {
+    display: block;
+    font-size: .78rem;
+}
+.legal-report .report-heading .tag {
+    font-size: .72rem;
+    white-space: normal;
+    text-align: right;
+}
+@media screen and (max-width: 520px) {
+    .legal-report .risk-summary #riskLevelLabel {
+        flex-basis: 100%;
+        margin-left: 0;
+    }
+}
