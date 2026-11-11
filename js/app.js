@@ -707,7 +707,7 @@
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
             const title = input.value.trim();
-            if (!title || title.length > 80 || /[\\r\\n\\u0000-\\u001f]/.test(title)) {
+            if (!title || title.length > 80 || /[\x00-\x1f\x7f]/.test(title)) {
                 showNotice('Escribe un nombre válido de hasta 80 caracteres.', 'warn');
                 return;
             }
