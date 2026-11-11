@@ -796,6 +796,25 @@ if (rule.id === 'renewal') {
         return 'Revisión neutral';
     }
 
+    function reportLimitations(data) {
+        const report = data || {};
+        const notes = [];
+        const source = String(report.source || '');
+        const engineName = String(report.provenance?.engine || '');
+        const preliminary = !source.startsWith('Gemini (') && !engineName.toLowerCase().includes('gemini');
+        if (preliminary) {
+            notes.push('Revisión preliminar: los hallazgos provienen del motor local y requieren verificación profesional.');
+        }
+        if (report.truncated) {
+            notes.push('Cobertura parcial: el análisis utilizó ' + report.analyzedLength + ' de ' + report.originalLength + ' caracteres del documento.');
+        }
+        if (report.reviewStatus === 'needs_review') {
+            notes.push('Revisión pendiente: existen incertidumbres o discrepancias que requieren comprobación adicional.');
+        }
+        notes.push('La puntuación es una estimación automatizada de riesgo, no una certificación de validez legal.');
+        return notes;
+    }
+
     function buildReportText(data) {
         const report = data || {};
         const alerts = report.alerts || [];
@@ -817,6 +836,9 @@ if (rule.id === 'renewal') {
             lines.push('');
         }
         lines.push(...traceLines(report));
+        lines.push('ALCANCE Y LIMITACIONES');
+        lines.push(...reportLimitations(report));
+        lines.push('');
         lines.push('HALLAZGOS (' + alerts.length + ')');
         alerts.forEach(function (alert, index) {
             lines.push((index + 1) + '. ' + alert.title + ' [' + String(alert.level || 'medium').toUpperCase() + ']');
@@ -889,6 +911,7 @@ if (rule.id === 'renewal') {
         validateModelAnalysis: validateModelAnalysis,
         validateComprehensiveAnalysis, reviewUnits, REVIEW_CATEGORIES, REVIEW_LABELS,
         traceLines: traceLines,
+        reportLimitations: reportLimitations,
         buildReportText: buildReportText,
         createHistoryRecord: createHistoryRecord,
         pushHistory: pushHistory,
