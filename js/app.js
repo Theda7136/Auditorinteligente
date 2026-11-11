@@ -164,6 +164,8 @@
         const container = $('alertsContainer');
         container.replaceChildren();
         $('contractText').classList.remove('contract-evidence-active');
+        $('selectedClauseIndicator').hidden = true;
+        $('selectedClauseIndicator').textContent = '';
         alerts.forEach(function (alert) {
             const button = document.createElement('button');
             button.type = 'button';
@@ -434,7 +436,14 @@
 
     function revealExcerpt(alert) {
         const area = $('contractText');
-        const candidates = [alert.anchor, alert.excerpt].filter(Boolean);
+        const indicator = $('selectedClauseIndicator');
+        const evidence = Array.isArray(alert.evidence) ? alert.evidence : [];
+        const clauseId = alert.clauseId || evidence.find(function (entry) {
+            return typeof entry?.clauseId === 'string' && entry.clauseId.trim();
+        })?.clauseId;
+        const candidates = [alert.anchor, alert.excerpt].concat(
+            evidence.map(function (entry) { return entry?.excerpt; })
+        ).filter(Boolean);
         for (let i = 0; i < candidates.length; i += 1) {
             const needle = String(candidates[i]).replace(/^[.…\s]+|[.…\s]+$/g, '').slice(0, 80);
             if (!needle) continue;
@@ -443,10 +452,16 @@
                 area.focus();
                 area.setSelectionRange(index, index + needle.length);
                 area.classList.add('contract-evidence-active');
+                indicator.textContent = clauseId
+                    ? 'Evidencia localizada · ' + clauseId
+                    : 'Evidencia localizada en el documento';
+                indicator.hidden = false;
                 showNotice('');
                 return;
             }
         }
+        indicator.textContent = 'Cita no localizada en el texto';
+        indicator.hidden = false;
         showNotice('No encontré esa cita dentro del texto cargado.', 'info');
     }
 
