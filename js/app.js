@@ -276,11 +276,15 @@
                 const clauseId = entry.clauseId || finding.clauseId || clauseIds.join(', ');
                 const excerpt = finding.excerpt || '';
 
+                if (clauseId) {
+                    const reference = document.createElement('span');
+                    reference.className = 'hybrid-finding-reference';
+                    reference.textContent = clauseId;
+                    card.append(reference);
+                }
+
                 if (excerpt) {
-                    const quote = document.createElement('span');
-                    quote.className = 'hybrid-finding-quote';
-                    quote.textContent = (clauseId ? clauseId + ' · ' : '') + excerpt;
-                    card.append(quote);
+                    card.title = 'Localizar la cita en el contrato';
                     card.addEventListener('click', function () {
                         revealExcerpt(finding);
                     });
