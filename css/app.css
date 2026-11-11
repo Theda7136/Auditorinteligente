@@ -478,3 +478,33 @@ details > summary:focus-visible {
     .workspace-sidebar { display: none !important; }
     .wrap { padding: 0; margin: 0; }
 }
+
+/* Workspace views */
+.workspace-view[hidden] { display: none !important; }
+.workspace-view[data-view="history"],
+.workspace-view[data-view="settings"],
+.workspace-view[data-view="account"] { max-width: 1050px; }
+.workspace-view[data-view="history"] > .card,
+.workspace-view[data-view="settings"] > .card { width: 100%; }
+.workspace-view[data-view="settings"] .connection-card { display: block; }
+.workspace-view[data-view="settings"] .connection-card > summary { cursor: pointer; }
+.workspace-view[data-view="account"] { margin-top: 0; }
+.topbar { min-height: 90px; padding-top: 17px; padding-bottom: 17px; }
+.empty { padding: 54px 22px; text-align: center; }
+.empty-symbol {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    border: 1px solid #d3e7e3;
+    border-radius: 17px;
+    background: #eaf6f2;
+    color: #0e8276;
+    font-size: 1.8rem;
+}
+.empty h3 { margin: 0 0 10px; color: #172b40; font-size: 1.05rem; }
+.empty p { max-width: 390px; margin: 0 auto; line-height: 1.7; }
+@media print {
+    .workspace-view[hidden] { display: none !important; }
+}
