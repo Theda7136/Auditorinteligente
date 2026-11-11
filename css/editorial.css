@@ -233,8 +233,6 @@ body {
     .topbar { padding: 20px 4px; }
     .topbar h1 { font-size: 1.85rem; }
     .card { padding: 20px 16px; }
-    .hybrid-tabs { grid-template-columns: 1fr; }
-    .hybrid-tab { border-right: 0; border-bottom: 1px solid #cbd0c6; }
 }
 @media print {
     body { background: white; }
@@ -805,4 +803,36 @@ body {
 @media screen and (max-width: 760px) {
     #workspaceHistory .history-tools { grid-template-columns: 1fr; }
     #workspaceHistory .history-item { align-items: start; }
+}
+
+/* Secondary views: let history scroll with the page, not inside a short viewport. */
+#workspaceHistory .history {
+    max-height: none;
+    overflow: visible;
+    min-width: 0;
+}
+#workspaceHistory .history-item { min-width: 0; }
+#workspaceHistory .history-open { overflow: hidden; }
+#workspaceHistory .history-open > span:first-child { min-width: 0; }
+#workspaceHistory .history-item > .btn { min-height: 40px; }
+@media screen and (max-width: 760px) {
+    .workspace-view,
+    #workspaceHistory,
+    #workspaceSettings,
+    #workspaceAccount { width: 100%; min-width: 0; }
+    #workspaceHistory .history-open { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 6px 12px; }
+    #workspaceHistory .history-open > span:first-child { flex: 1 1 170px; }
+    #workspaceHistory .history-open .score-pill { flex: none; }
+    #workspaceSettings .help-row,
+    #workspaceSettings .priorities,
+    #workspaceAccount .fields { grid-template-columns: minmax(0, 1fr); }
+    #workspaceSettings select,
+    #workspaceAccount input { max-width: 100%; }
+    .legal-report .risk-summary { gap: 6px; }
+}
+@media screen and (max-width: 440px) {
+    #workspaceHistory .history-item { gap: 6px; }
+    #workspaceHistory .history-item > .btn { padding-inline: 8px; }
+    #workspaceSettings > summary { align-items: flex-start; }
+    #workspaceSettings > summary > .muted { overflow-wrap: anywhere; }
 }
