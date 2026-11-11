@@ -526,3 +526,26 @@ body {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+/* Evidence locator stays beside the source document rather than inside the legal opinion. */
+.contract-editor-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 14px;
+}
+.selected-clause-indicator:not([hidden]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b5739;
+    font: 500 .76rem "IBM Plex Sans", sans-serif;
+}
+.selected-clause-indicator:not([hidden])::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    flex: none;
+    background: #9c8358;
+}
