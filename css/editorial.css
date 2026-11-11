@@ -891,3 +891,26 @@ body {
     #workspaceHistory .history-pagination { gap: 8px; }
     #workspaceHistory .history-pagination .btn { padding-inline: 10px; }
 }
+
+#workspaceHistory .history-rename { flex: none; color: #66563d; }
+#workspaceHistory .history-title-editor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: -4px 0 12px;
+    padding: 12px;
+    border: 1px solid #c9c7ba;
+    background: #f5f3eb;
+}
+#workspaceHistory .history-title-editor input {
+    flex: 1 1 210px;
+    min-width: 0;
+    min-height: 40px;
+}
+#workspaceHistory .history-title-editor .btn { min-height: 40px; }
+@media screen and (max-width: 600px) {
+    #workspaceHistory .history-item { flex-wrap: wrap; }
+    #workspaceHistory .history-open { flex: 1 1 100%; }
+    #workspaceHistory .history-rename { margin-left: auto; }
+}
