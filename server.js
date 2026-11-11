@@ -331,7 +331,7 @@ function authorizeAnalysis(request, payload, session, now = Date.now(), quotaSto
     return { input: normalized.value };
 }
 
-async function analyzeContract(payload) {
+async function analyzeContract(payload, repairData = null) {
     const normalized = normalizeAnalysisInput(payload);
     if (normalized.error) return normalized.error;
     payload = normalized.value;
@@ -353,6 +353,11 @@ async function analyzeContract(payload) {
     });
     const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/'
         + encodeURIComponent(request.model) + ':generateContent';
+    if (repairData) {
+        request.body.contents.push({ role: 'model', parts: [{ text: JSON.stringify(repairData) }] }, {
+            role: 'user', parts: [{ text: 'Corrige la respuesta anterior contra las unidades originales. Falló la validación de cobertura o citas. Incluye TODAS las unidades y categorías, sin duplicados. Cada cita de claims debe ser un fragmento contiguo literal de SU unidad, sin puntos suspensivos, abreviaturas ni frases concatenadas. Divide afirmaciones con evidencia separada en claims diferentes. No añadas hechos que no estén respaldados. Devuelve de nuevo el JSON completo.' }]
+        });
+    }
 
     let upstream;
     try {
@@ -366,31 +371,51 @@ async function analyzeContract(payload) {
             signal: AbortSignal.timeout(45_000)
         });
     } catch (error) {
-        return { status: 502, body: { code: 'UPSTREAM_ERROR', error: 'No fue posible conectar con Gemini.' } };
+        const timeout = error.name === 'TimeoutError' || error.name === 'AbortError';
+        return { status: 502, body: { code: timeout ? 'UPSTREAM_TIMEOUT' : 'UPSTREAM_NETWORK', error: timeout ? 'Gemini excedió el tiempo de espera.' : 'No fue posible conectar con Gemini.', diagnostic: { model, stage: 'connection', reason: timeout ? 'TIMEOUT' : 'NETWORK' } } };
     }
 
     const responseBody = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
+        // Never return the raw provider message: it may echo document text or credentials.
+        const providerError = responseBody.error || {};
+        const rawMessage = String(providerError.message || '');
+        const reason = /api.?key.*(?:invalid|expired|not valid)/i.test(rawMessage) ? 'API_KEY_INVALID'
+            : /thinking/i.test(rawMessage) ? 'THINKING_CONFIGURATION'
+            : /schema|responseMimeType|response_schema/i.test(rawMessage) ? 'RESPONSE_SCHEMA'
+            : /model.*(?:not found|not supported|not available)/i.test(rawMessage) ? 'MODEL_UNAVAILABLE'
+            : upstream.status === 400 ? 'INVALID_REQUEST'
+            : upstream.status === 429 ? 'RATE_LIMIT'
+            : upstream.status >= 500 ? 'PROVIDER_UNAVAILABLE' : 'PROVIDER_REJECTED';
+        const allowedStatuses = ['INVALID_ARGUMENT', 'UNAUTHENTICATED', 'PERMISSION_DENIED', 'NOT_FOUND', 'RESOURCE_EXHAUSTED', 'INTERNAL', 'UNAVAILABLE', 'FAILED_PRECONDITION'];
+        const diagnostic = { model, stage: 'provider', httpStatus: upstream.status, providerStatus: allowedStatuses.includes(providerError.status) ? providerError.status : 'UNKNOWN', reason };
         const status = upstream.status === 429 ? 429 : upstream.status === 404 ? 400 : 502;
         const message = upstream.status === 429
             ? 'Gemini limitó las solicitudes. Inténtalo de nuevo más tarde.'
             : upstream.status === 404
                 ? 'El modelo seleccionado no está disponible.'
                 : 'Gemini no pudo procesar el documento.';
-        return { status, body: { code: upstream.status === 429 ? 'RATE' : 'UPSTREAM_ERROR', error: message } };
+        const code = reason === 'API_KEY_INVALID' ? 'AUTH' : upstream.status === 429 ? 'RATE' : upstream.status === 404 ? 'MODEL' : upstream.status === 401 || upstream.status === 403 ? 'AUTH' : upstream.status === 400 ? 'UPSTREAM_INVALID_REQUEST' : 'UPSTREAM_ERROR';
+        return { status, body: { code, error: message + ' HTTP ' + upstream.status + ' (' + reason + ').', diagnostic } };
     }
 
-    const rawText = responseBody.candidates?.[0]?.content?.parts?.find(part => part.text)?.text;
+    if (responseBody.candidates?.[0]?.finishReason && responseBody.candidates[0].finishReason !== 'STOP') {
+        return { status: 502, body: { code: 'INCOMPLETE_RESPONSE', error: 'Gemini no completó el análisis.' } };
+    }
+    const rawText = responseBody.candidates?.[0]?.content?.parts?.find(part => part.text && !part.thought)?.text;
     if (!rawText) {
         return { status: 502, body: { code: 'EMPTY_RESPONSE', error: 'Gemini no devolvió un análisis legible.' } };
     }
 
+    let parsed;
     try {
         const cleaned = rawText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '');
+        parsed = JSON.parse(cleaned);
         return {
             status: 200,
             body: {
-                analysis: engine.normalizeAnalysis(JSON.parse(cleaned)),
+                analysis: engine.validateComprehensiveAnalysis(parsed, contractText.slice(0, request.analyzedLength), payload),
+                provenance: { engine: 'gemini', model: request.model, analysisId: crypto.randomUUID(), generatedAt: new Date().toISOString(), inputSha256: crypto.createHash('sha256').update(contractText).digest('hex'), version: 'gemini-review-v5', correctionAttempts: repairData ? 1 : 0 },
                 model: request.model,
                 truncated: request.truncated,
                 originalLength: request.originalLength,
@@ -398,7 +423,9 @@ async function analyzeContract(payload) {
             }
         };
     } catch (error) {
-        return { status: 502, body: { code: 'INVALID_RESPONSE', error: 'Gemini devolvió una respuesta que no se pudo interpretar.' } };
+        if (!repairData && parsed && JSON.stringify(parsed).length <= 120000) return analyzeContract(payload, parsed);
+        const code = error.message === 'Unverified quote' ? 'UNVERIFIED_CLAIMS' : ['INCOMPLETE_COVERAGE', 'UNVERIFIED_CLAIMS'].includes(error.message) ? error.message : 'INVALID_RESPONSE';
+        return { status: 502, body: { code, error: code === 'INCOMPLETE_COVERAGE' ? 'Gemini no completó la revisión obligatoria por cláusulas y categorías.' : code === 'UNVERIFIED_CLAIMS' ? 'Gemini devolvió afirmaciones sin citas verificables en su cláusula.' : 'Gemini devolvió una respuesta que no se pudo interpretar.' } };
     }
 }
 
@@ -425,6 +452,7 @@ function serveStatic(request, response) {
         }
         response.writeHead(200, {
             'Content-Type': MIME_TYPES[path.extname(filePath)] || 'application/octet-stream',
+            'Cache-Control': 'no-store',
             'X-Content-Type-Options': 'nosniff'
         });
         response.end(content);
@@ -577,7 +605,7 @@ function createServer(options = {}) {
             if (await handleAuth(request, response, pathname)) return;
 
             if (request.method === 'GET' && pathname === '/api/health') {
-                sendJson(response, 200, { status: 'ok', gemini: Boolean(process.env.GEMINI_API_KEY) });
+                sendJson(response, 200, { status: 'ok', gemini: Boolean(process.env.GEMINI_API_KEY), geminiConfigured: Boolean(process.env.GEMINI_API_KEY), connectivity: 'not_checked' });
                 return;
             }
 

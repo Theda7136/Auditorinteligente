@@ -208,3 +208,14 @@ details[open] .chevron { transform: rotate(180deg); }
 .account-card input { width: 100%; box-sizing: border-box; }
 .account-actions { display: flex; align-items: end; gap: 8px; flex-wrap: wrap; }
 .account-card [hidden] { display: none !important; }
+/* Keep provenance out of the score card and wrap long hashes on narrow screens. */
+.analysis-details { margin: 12px 0 18px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; color: #334155; background: #f8fafc; min-width: 0; }
+.analysis-details summary { cursor: pointer; font-weight: 600; }
+#analysisDetailsText { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 10px; font-size: 0.85rem; }
+#riskCard .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+#riskCard .muted { color: #cbd5e1; }
+#auditTimestampText { display: block; max-width: 100%; font-size: 0.8rem; line-height: 1.5; overflow-wrap: anywhere; }
+.layout > *, .card, .risk-card, .risk-card > *, .risk-card .row > *, .meter { min-width: 0; }
+.risk-card, .alert, .recs, .tag { overflow-wrap: anywhere; }
+.score-num { flex-shrink: 0; }
+#auditSourceTag { max-width: 100%; white-space: normal; }

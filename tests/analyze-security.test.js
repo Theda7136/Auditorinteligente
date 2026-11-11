@@ -257,7 +257,7 @@ test('el análisis usa la clave solo en cabecera y limita la salida del modelo',
     global.fetch = async (url, options) => {
         upstreamRequest = { url: String(url), options };
         return new Response(JSON.stringify({
-            candidates: [{ content: { parts: [{ text: JSON.stringify({ score: 20, alerts: [], recommendations: ['Revisar.'] }) }] } }]
+            candidates: [{ content: { parts: [{ text: JSON.stringify(require('./helpers/review-response')(20)) }] } }]
         }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
     try {
@@ -265,7 +265,7 @@ test('el análisis usa la clave solo en cabecera y limita la salida del modelo',
         assert.equal(result.status, 200);
         assert.equal(upstreamRequest.url.includes('test-secret'), false);
         assert.equal(upstreamRequest.options.headers['x-goog-api-key'], 'test-secret');
-        assert.equal(JSON.parse(upstreamRequest.options.body).generationConfig.maxOutputTokens, 4096);
+        assert.equal(JSON.parse(upstreamRequest.options.body).generationConfig.maxOutputTokens, 16384);
     } finally {
         global.fetch = oldFetch;
         if (oldKey === undefined) delete process.env.GEMINI_API_KEY;
