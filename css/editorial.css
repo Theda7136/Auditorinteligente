@@ -721,3 +721,35 @@ body {
     #workspaceAccount .account-actions .btn { min-height: 44px; }
     #workspaceSettings .help-row { grid-template-columns: 1fr; }
 }
+
+/* Fallback is a non-blocking status, not a second page header. */
+@media screen {
+    .gemini-retry {
+        padding: 13px 17px;
+        margin-bottom: 16px;
+        border: 1px solid #d4c8ae;
+        border-left: 3px solid #a88d5e;
+        border-radius: 0;
+        background: #f6f3eb;
+        color: #4b483c;
+        align-items: center;
+        gap: 12px 20px;
+    }
+    .gemini-retry strong { font-size: .84rem; }
+    .gemini-retry p { margin: 4px 0 0; font-size: .78rem; line-height: 1.5; }
+    .gemini-retry .btn {
+        min-height: 40px;
+        white-space: nowrap;
+        background: transparent;
+        border: 1px solid #bdb7a9;
+        color: #3c443d;
+    }
+    .topbar { margin-bottom: 16px; }
+    #workspaceHistory .history,
+    #workspaceSettings .config-body,
+    #workspaceAccount .fields { min-width: 0; }
+}
+@media screen and (max-width: 760px) {
+    .gemini-retry { flex-wrap: wrap; }
+    .gemini-retry .btn { width: 100%; }
+}
