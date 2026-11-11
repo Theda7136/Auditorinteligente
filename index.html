@@ -50,6 +50,10 @@
         </header>
 
         <p id="appNotice" class="notice" hidden></p>
+        <div id="geminiRetryPanel" class="gemini-retry no-print" hidden>
+            <div><strong>Gemini no completó el análisis</strong><p id="geminiRetryDescription">Puedes reintentar el análisis. El motor local sigue disponible.</p></div>
+            <button id="retryGeminiBtn" class="btn secondary" type="button">Reintentar con Gemini</button>
+        </div>
 
         <div id="workspaceAudit" class="layout workspace-view" data-view="audit">
             <div class="stack">
