@@ -240,3 +240,34 @@ body {
     body { background: white; }
     .card { border: 0; }
 }
+
+/* Document-first workspace: keep the source visible while reviewing a long opinion. */
+@media screen and (min-width: 1181px) {
+    #workspaceAudit {
+        align-items: start;
+        grid-template-columns: minmax(0, 1.45fr) minmax(400px, 1fr);
+        gap: 18px;
+    }
+    #workspaceAudit > .stack {
+        position: sticky;
+        top: 18px;
+        align-self: start;
+    }
+    #workspaceAudit > .stack > .card {
+        display: flex;
+        flex-direction: column;
+        min-height: min(780px, calc(100vh - 36px));
+    }
+    #contractText {
+        flex: 1 1 auto;
+        min-height: 260px;
+        height: clamp(280px, calc(100vh - 435px), 700px);
+    }
+    #workspaceAudit > aside.card {
+        min-width: 0;
+    }
+}
+@media screen and (max-width: 1180px) {
+    #workspaceAudit > .stack { position: static; }
+    #contractText { min-height: 350px; }
+}
