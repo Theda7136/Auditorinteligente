@@ -222,9 +222,26 @@
         list.replaceChildren();
         (data.recommendations || []).filter(function (recommendation) {
             return typeof recommendation === 'string' && !/^Respaldo local:/i.test(recommendation);
-        }).forEach(function (recommendation) {
+        }).forEach(function (recommendation, index) {
             const item = document.createElement('li');
-            item.textContent = recommendation;
+            item.className = 'recommendation-action';
+
+            const number = document.createElement('span');
+            number.className = 'recommendation-number';
+            number.textContent = String(index + 1).padStart(2, '0');
+
+            const content = document.createElement('div');
+            content.className = 'recommendation-content';
+
+            const label = document.createElement('span');
+            label.className = 'recommendation-label';
+            label.textContent = 'Acción sugerida';
+
+            const description = document.createElement('p');
+            description.textContent = recommendation;
+
+            content.append(label, description);
+            item.append(number, content);
             list.append(item);
         });
     }
