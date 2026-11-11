@@ -549,3 +549,97 @@ body {
     flex: none;
     background: #9c8358;
 }
+
+/* Workspace-wide editorial refinement: document, navigation and report. */
+@media screen {
+    .topbar {
+        padding-top: 18px;
+        padding-bottom: 17px;
+        margin-bottom: 20px;
+        align-items: end;
+    }
+    .topbar h1 {
+        font-size: clamp(1.75rem, 2.3vw, 2.3rem);
+        line-height: 1.15;
+    }
+    .topbar p { margin-top: 9px; line-height: 1.55; }
+    .workspace-sidebar .sidebar-link { min-height: 50px; }
+    .workspace-sidebar .sidebar-link.is-current {
+        box-shadow: inset 2px 0 0 #c5ae82;
+        border-left: 0;
+        padding-left: 9px;
+    }
+    #workspaceAudit .stack > .card { min-width: 0; }
+    #workspaceAudit .stack > .card > .row:first-child { margin-bottom: 22px; }
+    #workspaceAudit .fields { gap: 14px; margin: 0 0 23px; }
+    #workspaceAudit .fields label { margin-bottom: 9px; }
+    #workspaceAudit select { min-height: 46px; }
+    #workspaceAudit .contract-editor-heading { margin-bottom: 9px; }
+    #contractText {
+        padding: 18px 19px;
+        font-size: .84rem;
+        line-height: 1.9;
+        tab-size: 4;
+        background: #fdfcf8;
+    }
+    .document-formats,
+    .editor-meta {
+        color: #69716b;
+        font: 400 .74rem "IBM Plex Sans", sans-serif;
+    }
+    .document-formats { letter-spacing: .02em; }
+    .editor-meta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 6px 16px;
+        margin-top: 10px;
+    }
+    #contractCharacterCount {
+        font-family: "DM Mono", Consolas, monospace;
+        font-size: .72rem;
+        color: #5d625a;
+    }
+    #workspaceAudit .actions {
+        border-top: 1px solid #deded6;
+        padding-top: 17px;
+        margin-top: 18px;
+    }
+    #workspaceAudit .actions .btn { min-height: 44px; }
+    .legal-report .report-heading { align-items: baseline; gap: 12px; }
+    .legal-report .report-heading .tag {
+        background: transparent;
+        border: 1px solid #cfd1c8;
+        color: #5b635c;
+    }
+    .legal-report .report-overview { padding-bottom: 21px; }
+    .legal-report #contextLine { margin-top: 15px; line-height: 1.55; }
+    .legal-report .report-findings { padding-top: 21px; }
+    .legal-report .empty {
+        padding: clamp(32px, 5vw, 54px) 16px;
+        max-width: 460px;
+        margin: 0 auto;
+    }
+    .legal-report .empty h3 { font-size: 1.55rem; }
+    .legal-report .empty p { line-height: 1.7; }
+}
+@media screen and (max-width: 1180px) {
+    #workspaceAudit .stack > .card { min-height: 0; }
+}
+@media screen and (max-width: 760px) {
+    .topbar { align-items: start; gap: 12px; }
+    .topbar h1 { font-size: 1.8rem; }
+    #workspaceAudit .fields { grid-template-columns: 1fr; gap: 12px; }
+    #workspaceAudit .fields select { width: 100%; }
+    #workspaceAudit .actions,
+    #workspaceAudit .actions-right { width: 100%; }
+    #workspaceAudit .actions-right { justify-content: flex-end; }
+    .legal-report .report-heading { flex-wrap: wrap; }
+}
+@media screen and (max-width: 440px) {
+    #workspaceAudit .actions-right { flex-direction: column; }
+    #workspaceAudit .actions-right .btn,
+    #workspaceAudit #uploadBtn { width: 100%; }
+    .topbar .badge { white-space: normal; }
+    #contractText { padding: 14px; font-size: .8rem; }
+}
