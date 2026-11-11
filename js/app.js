@@ -196,15 +196,18 @@
                 ? alert.evidence
                 : [{ excerpt: alert.excerpt, clauseId: alert.clauseId }];
 
-            evidenceList.forEach(function (evidence) {
-                if (!evidence?.excerpt) return;
-                const quote = document.createElement('blockquote');
-                quote.className = 'quote finding-quote';
-                const reference = evidence.clauseId ? evidence.clauseId + ' · ' : '';
-                const statement = evidence.statement ? evidence.statement + ' — ' : '';
-                quote.textContent = reference + statement + evidence.excerpt;
-                button.append(quote);
+            const evidenceQuotes = evidenceList.filter(function (evidence) {
+                return typeof evidence?.excerpt === 'string' && evidence.excerpt.trim();
             });
+
+            if (evidenceQuotes.length) {
+                const preview = document.createElement('blockquote');
+                preview.className = 'quote finding-quote finding-quote-preview';
+                const first = evidenceQuotes[0];
+                const prefix = first.clauseId ? first.clauseId + ' · ' : '';
+                preview.textContent = prefix + first.excerpt;
+                button.append(preview);
+            }
 
             button.addEventListener('click', function () {
                 container.querySelectorAll('.finding-card.is-selected').forEach(function (card) {
@@ -215,7 +218,29 @@
                 button.setAttribute('aria-pressed', 'true');
                 revealExcerpt(alert);
             });
-            container.append(button);
+            const entry = document.createElement('div');
+            entry.className = 'finding-entry';
+            entry.append(button);
+
+            if (evidenceQuotes.length) {
+                const details = document.createElement('details');
+                details.className = 'finding-evidence';
+                const summary = document.createElement('summary');
+                summary.textContent = evidenceQuotes.length > 1 ? 'Ver citas completas (' + evidenceQuotes.length + ')' : 'Ver cita completa';
+                details.append(summary);
+
+                evidenceQuotes.forEach(function (evidence) {
+                    const quote = document.createElement('blockquote');
+                    quote.className = 'quote finding-quote';
+                    const reference = evidence.clauseId ? evidence.clauseId + ' · ' : '';
+                    const statement = evidence.statement ? evidence.statement + ' — ' : '';
+                    quote.textContent = reference + statement + evidence.excerpt;
+                    details.append(quote);
+                });
+                entry.append(details);
+            }
+
+            container.append(entry);
         });
 
         const list = $('recommendationsList');
@@ -259,7 +284,7 @@
                 reference.textContent = 'Ver hallazgo relacionado';
                 reference.addEventListener('click', function () {
                     const alertIndex = alerts.indexOf(linkedAlert);
-                    const findingCard = container.children[alertIndex];
+                    const findingCard = container.children[alertIndex]?.querySelector('.finding-card');
                     if (!findingCard) return;
                     findingCard.click();
                     findingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
