@@ -671,7 +671,7 @@ function createServer(options = {}) {
                 if (request.method === 'PATCH' && match) {
                     const payload = await readJson(request);
                     const title = typeof payload.title === 'string' ? payload.title.trim() : '';
-                    if (!title || title.length > 80 || /[\\r\\n\\u0000-\\u001f]/.test(title)) {
+                    if (!title || title.length > 80 || /[\x00-\x1f\x7f]/.test(title)) {
                         sendJson(response, 400, { code: 'INVALID_TITLE', error: 'El nombre debe tener entre 1 y 80 caracteres y no contener saltos de línea.' });
                         return;
                     }
