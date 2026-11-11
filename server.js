@@ -668,6 +668,17 @@ function createServer(options = {}) {
                     return;
                 }
                 const match = pathname.match(/^\/api\/history\/(\d+)$/);
+                if (request.method === 'PATCH' && match) {
+                    const payload = await readJson(request);
+                    const title = typeof payload.title === 'string' ? payload.title.trim() : '';
+                    if (!title || title.length > 80 || /[\\r\\n\\u0000-\\u001f]/.test(title)) {
+                        sendJson(response, 400, { code: 'INVALID_TITLE', error: 'El nombre debe tener entre 1 y 80 caracteres y no contener saltos de línea.' });
+                        return;
+                    }
+                    const updated = store.renameAnalysis(Number(match[1]), session.user.id, title);
+                    sendJson(response, updated ? 200 : 404, { updated });
+                    return;
+                }
                 if (request.method === 'DELETE' && match) {
                     const deleted = store.deleteAnalysis(Number(match[1]), session.user.id);
                     sendJson(response, deleted ? 200 : 404, { deleted });
