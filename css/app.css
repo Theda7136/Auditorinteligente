@@ -235,3 +235,118 @@ details[open] .chevron { transform: rotate(180deg); }
     .connection-card .help-row { display: grid; }
     .connection-card .model-field { min-width: 0; }
 }
+
+/* Hybrid Workspace: visual foundation. Existing markup and behavior remain unchanged. */
+:root {
+    --ink: #17283b;
+    --muted: #617187;
+    --line: #dfe6ee;
+    --canvas: #f5f7fa;
+    --navy: #101c2d;
+    --navy-2: #1b3046;
+    --teal: #0e8276;
+    --focus: #0e8276;
+}
+
+body {
+    font-family: Inter, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.55;
+}
+
+.wrap {
+    max-width: 1600px;
+    padding: 24px clamp(16px, 3vw, 48px) 56px;
+}
+
+.topbar {
+    padding: 24px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgb(16 28 45 / 10%);
+}
+
+.topbar h1 {
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    letter-spacing: -.025em;
+}
+
+.topbar p { color: #c3d2e0; }
+
+.card, .dialog {
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgb(16 28 45 / 4%);
+}
+
+.card { padding: clamp(18px, 2vw, 28px); }
+.card h2 { font-size: 1.12rem; letter-spacing: -.015em; }
+.layout { grid-template-columns: minmax(0, 1.65fr) minmax(360px, 1fr); gap: 20px; }
+.stack { gap: 20px; }
+.account-card { margin-bottom: 20px; }
+
+input, select, textarea {
+    border-color: #d2dce6;
+    border-radius: 10px;
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+textarea {
+    min-height: 340px;
+    font-size: 13px;
+    line-height: 1.7;
+    background: #fbfcfe;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgb(14 130 118 / 15%);
+}
+
+.btn {
+    min-height: 42px;
+    border-radius: 10px;
+    transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.btn.accent { background: var(--teal); }
+.btn.accent:hover:not(:disabled) { background: #096d63; }
+.btn:focus-visible, .history-open:focus-visible, .alert:focus-visible,
+details > summary:focus-visible {
+    outline: 3px solid rgb(14 130 118 / 45%);
+    outline-offset: 3px;
+}
+
+.risk-card {
+    background: #15273a;
+    border: 1px solid #294159;
+    border-radius: 14px;
+    padding: 22px;
+}
+
+.score-num { font-size: 2.4rem; letter-spacing: -.04em; }
+.alert, .history-item, .recs, .analysis-details { border-radius: 10px; }
+.alert { padding: 14px; }
+.alert:hover { border-color: #aabaca; }
+.empty { padding: 46px 14px; }
+.tag { border-radius: 999px; padding: 5px 10px; }
+
+@media (max-width: 1080px) {
+    .layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .wrap { padding: 12px 12px 32px; }
+    .topbar { padding: 20px; }
+    .card { padding: 18px; }
+    .fields, .priorities { grid-template-columns: 1fr; }
+    .row { flex-wrap: wrap; }
+    .actions-right, .export-row { width: 100%; }
+    textarea { min-height: 280px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, input, select, textarea { transition: none; }
+}
+
+@media print {
+    .wrap { max-width: none; padding: 0; }
+    .card { box-shadow: none; }
+}
