@@ -623,7 +623,11 @@
                     source = 'Simulación local (respaldo)';
                     result.provenance = { ...result.provenance, attemptedModel: request.model, fallbackReason: error.code || 'UNKNOWN', diagnostic: error.diagnostic };
                     result.recommendations.unshift('Respaldo local: ' + error.code + '. ' + error.message);
-                    showNotice(error.message, 'warn');
+                    if (!['MODEL', 'RATE', 'QUOTA', 'AUTH'].includes(error.code)) {
+                        showNotice('');
+                    } else {
+                        showNotice(error.message, 'warn');
+                    }
                 }
             } else {
                 result = engine.runLocalSimulation(fullText, prefs);
