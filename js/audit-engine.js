@@ -652,6 +652,28 @@
         };
     }
 
+    function splitContractForAnalysis(text, maxChars) {
+        const source = String(text || '');
+        const limit = Math.max(1000, maxChars || MAX_GEMINI_CHARS);
+        if (source.length <= limit) return [{ text: source, start: 0, end: source.length, truncated: false }];
+        const units = reviewUnits(source);
+        const chunks = [];
+        let currentStart = 0;
+        let currentEnd = 0;
+        for (const unit of units) {
+            if (unit.end - currentStart > limit && currentEnd > currentStart) {
+                chunks.push({ text: source.slice(currentStart, currentEnd), start: currentStart, end: currentEnd, truncated: true });
+                currentStart = unit.start;
+            }
+            currentEnd = unit.end;
+        }
+        if (currentEnd > currentStart) chunks.push({ text: source.slice(currentStart, currentEnd), start: currentStart, end: currentEnd, truncated: true });
+        if (!chunks.length) {
+            for (let start = 0; start < source.length; start += limit) chunks.push({ text: source.slice(start, start + limit), start, end: Math.min(source.length, start + limit), truncated: true });
+        }
+        return chunks;
+    }
+
     function buildSystemPrompt(options) {
         const settings = options || {};
         const law = JURISDICTIONS[settings.jurisdiction] || JURISDICTIONS.OTRO;
@@ -756,8 +778,10 @@
                 || typeof alert.desc !== 'string' || typeof alert.excerpt !== 'string'
                 || !alert.excerpt.trim() || !text.includes(alert.excerpt)) throw new Error('Unverified quote');
         }
+        const recommendations = [...parsed.recommendations, 'Referencias jurídicas generadas por IA: pendientes de verificación de vigencia y aplicabilidad.'];
         return { score: parsed.score, alerts: parsed.alerts.map(a => ({ ...a, evidenceStart: text.indexOf(a.excerpt), evidenceEnd: text.indexOf(a.excerpt) + a.excerpt.length })),
-            recommendations: [...parsed.recommendations, 'Referencias jurídicas generadas por IA: pendientes de verificación de vigencia y aplicabilidad.'],
+            recommendations,
+            recommendationVerification: recommendations.map((text, index) => ({ index, status: 'unverified', reason: 'Recomendación generada por el modelo; requiere revisión humana y fuente jurídica aplicable.' })),
             scoring: { version: 'model-reported', note: 'Puntuación estimada por el modelo; no calibrada ni comparable con el índice local.' } };
     }
 
@@ -871,6 +895,7 @@
         riskBand: riskBand,
         runLocalSimulation: runLocalSimulation,
         prepareContractText: prepareContractText,
+        splitContractForAnalysis: splitContractForAnalysis,
         buildSystemPrompt: buildSystemPrompt,
         buildGeminiRequest: buildGeminiRequest,
         normalizeAnalysis: normalizeAnalysis,

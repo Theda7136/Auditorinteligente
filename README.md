@@ -12,6 +12,8 @@ Se evaluaron además seis casos reproducibles de Colombia, México y España, co
 
 Gemini puede responder `503 UNAVAILABLE` o producir respuestas incompletas; el servidor registra la causa, valida estructura y citas, y solo usa el fallback cuando corresponde. El indicador de salud no equivale a una prueba de análisis exitoso. Antes de producción siguen pendientes un corpus ciego revisado por abogados, validación por jurisdicción y materia, repetición controlada de Gemini, y hacer que el servidor sea la autoridad del resultado persistido.
 
+Los documentos extensos disponen de segmentación por unidades (`splitContractForAnalysis`) para preparar un análisis por cláusulas sin cortar una unidad reconocible. La interfaz actual todavía avisa cuando Gemini recibe solo el tramo permitido; la consolidación automática de varias llamadas Gemini requiere una fase posterior para evitar duplicados y puntuaciones incompatibles. Las recomendaciones de Gemini se marcan como `unverified` y no deben tratarse como fuentes jurídicas comprobadas.
+
 El informe detallado y la evidencia de ejecución se encuentran en `outputs/AUDITORIA.md` dentro del paquete de auditoría, no en la base de datos de usuarios.
 
 ## Requisitos

@@ -154,3 +154,16 @@ test('una respuesta de modelo se normaliza', function () {
     assert.equal(normalized.alerts[0].level, 'medium');
     assert.equal(normalized.alerts[0].excerpt, 'renuncian al fuero');
 });
+
+test('divide documentos largos respetando unidades contractuales', function () {
+    const text = Array.from({ length: 8 }, (_, i) => `CLÁUSULA ${i + 1}. ${'Contenido contractual '.repeat(80)}`).join('\n');
+    const chunks = engine.splitContractForAnalysis(text, 1200);
+    assert.ok(chunks.length > 1);
+    assert.equal(chunks.map(chunk => chunk.text).join(''), text);
+    for (const chunk of chunks) assert.ok(chunk.text.length <= 1200 || chunk.end - chunk.start > 1200);
+});
+
+test('las recomendaciones de Gemini quedan marcadas como no verificadas', function () {
+    const result = engine.validateModelAnalysis({ score: 20, alerts: [], recommendations: ['Aplicar el artículo 1601.'] }, 'Texto contractual.');
+    assert.equal(result.recommendationVerification[0].status, 'unverified');
+});
