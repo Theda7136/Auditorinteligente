@@ -22,6 +22,8 @@ const ANALYSES_PER_IP = 20;
 const AUTH_COOKIE = 'ai_session';
 const CSRF_COOKIE = 'ai_csrf';
 const PASSWORD_MIN_LENGTH = 10;
+const HISTORY_SIGNING_SECRET = process.env.HISTORY_SIGNING_SECRET || crypto.randomBytes(32).toString('hex');
+const REQUEST_BODY_TIMEOUT_MS = 30_000;
 const requestCounts = new Map();
 const fallbackAnalysisCounts = new Map();
 const MIME_TYPES = {
@@ -150,24 +152,47 @@ function readJson(request) {
     return new Promise((resolve, reject) => {
         let body = '';
         let size = 0;
+        let settled = false;
+        const timer = setTimeout(() => {
+            if (settled) return;
+            settled = true;
+            reject(Object.assign(new Error('Tiempo de lectura agotado.'), { status: 408 }));
+            request.destroy();
+        }, REQUEST_BODY_TIMEOUT_MS);
+        const finish = (fn, value) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            fn(value);
+        };
         request.on('data', chunk => {
+            if (settled) return;
             size += chunk.length;
             if (size > MAX_BODY_BYTES) {
-                reject(Object.assign(new Error('La solicitud supera el tamaño permitido.'), { status: 413 }));
+                finish(reject, Object.assign(new Error('La solicitud supera el tamaño permitido.'), { status: 413 }));
                 request.destroy();
                 return;
             }
             body += chunk;
         });
         request.on('end', () => {
+            if (settled) return;
             try {
-                resolve(JSON.parse(body || '{}'));
+                finish(resolve, JSON.parse(body || '{}'));
             } catch (error) {
-                reject(Object.assign(new Error('El cuerpo de la solicitud no es JSON válido.'), { status: 400 }));
+                finish(reject, Object.assign(new Error('El cuerpo de la solicitud no es JSON válido.'), { status: 400 }));
             }
         });
-        request.on('error', reject);
+        request.on('error', error => finish(reject, error));
     });
+}
+
+function signHistoryData(data) {
+    const canonical = { ...data };
+    delete canonical.historyToken;
+    return crypto.createHmac('sha256', HISTORY_SIGNING_SECRET)
+        .update(JSON.stringify(canonical))
+        .digest('base64url');
 }
 
 function isRateLimited(request, trustedProxyList, quotaStore = null, now = Date.now()) {
@@ -411,11 +436,15 @@ async function analyzeContract(payload, repairData = null) {
     try {
         const cleaned = rawText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '');
         parsed = JSON.parse(cleaned);
+        const analysis = engine.validateComprehensiveAnalysis(parsed, contractText.slice(0, request.analyzedLength), payload);
+        const provenance = { engine: 'gemini', model: request.model, analysisId: crypto.randomUUID(), generatedAt: new Date().toISOString(), inputSha256: crypto.createHash('sha256').update(contractText).digest('hex'), version: 'gemini-review-v5', correctionAttempts: repairData ? 1 : 0 };
+        const historyData = { ...analysis, provenance };
         return {
             status: 200,
             body: {
-                analysis: engine.validateComprehensiveAnalysis(parsed, contractText.slice(0, request.analyzedLength), payload),
-                provenance: { engine: 'gemini', model: request.model, analysisId: crypto.randomUUID(), generatedAt: new Date().toISOString(), inputSha256: crypto.createHash('sha256').update(contractText).digest('hex'), version: 'gemini-review-v5', correctionAttempts: repairData ? 1 : 0 },
+                analysis,
+                historyToken: signHistoryData(historyData),
+                provenance,
                 model: request.model,
                 truncated: request.truncated,
                 originalLength: request.originalLength,
@@ -636,7 +665,8 @@ function createServer(options = {}) {
                     const title = typeof entry.title === 'string' ? entry.title.trim().slice(0, 80) : '';
                     const excerpt = typeof entry.excerpt === 'string' ? entry.excerpt.slice(0, 400) : '';
                     const data = entry.data;
-                    if (!title || !data || !Number.isInteger(data.score) || data.score < 0 || data.score > 100) {
+                    const token = typeof entry.historyToken === 'string' ? entry.historyToken : '';
+                    if (!title || !data || !Number.isInteger(data.score) || data.score < 0 || data.score > 100 || !token || token !== signHistoryData(data)) {
                         sendJson(response, 400, { code: 'INVALID_HISTORY', error: 'El análisis enviado no tiene un formato válido.' });
                         return;
                     }
@@ -724,5 +754,6 @@ module.exports = {
     analyzeOriginAllowed,
     analyzeEnvelopeError,
     authorizeAnalysis,
-    parseCookies
+    parseCookies,
+    signHistoryData
 };

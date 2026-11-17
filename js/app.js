@@ -248,7 +248,7 @@
             error.diagnostic = payload.diagnostic;
             throw error;
         }
-        return Object.assign({}, payload.analysis, { provenance: payload.provenance });
+        return Object.assign({}, payload.analysis, { provenance: payload.provenance, historyToken: payload.historyToken || '' });
     }
 
     function readHistory() {
@@ -356,7 +356,7 @@
             const response = await fetch('/api/history', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfTokenValue },
-                body: JSON.stringify({ title: record.title, excerpt: record.excerpt, data: record.data })
+                body: JSON.stringify({ title: record.title, excerpt: record.excerpt, data: record.data, historyToken: data.historyToken || '' })
             });
             if (!response.ok) {
                 showNotice('El análisis terminó, pero no se pudo guardar en tu cuenta.', 'warn');

@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { createServer } = require('../server.js');
+const { createServer, signHistoryData } = require('../server.js');
 
 async function startServer() {
     const server = createServer({ dbPath: ':memory:' });
@@ -123,6 +123,7 @@ test('el historial persiste por usuario y no permite acceder a registros ajenos'
         const unauthenticated = await fetch(app.baseUrl + '/api/history');
         assert.equal(unauthenticated.status, 401);
 
+        const historyData = { score: 72, alerts: [], recommendations: [], date: '2026-11-06' };
         const created = await fetch(app.baseUrl + '/api/history', {
             method: 'POST',
             headers: {
@@ -131,7 +132,7 @@ test('el historial persiste por usuario y no permite acceder a registros ajenos'
             },
             body: JSON.stringify({
                 title: 'Contrato de prueba', excerpt: 'Extracto breve',
-                data: { score: 72, alerts: [], recommendations: [], date: '2026-11-06' }
+                data: historyData, historyToken: signHistoryData(historyData)
             })
         });
         assert.equal(created.status, 201);
