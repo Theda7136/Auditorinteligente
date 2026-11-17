@@ -56,7 +56,7 @@ function createApi(store) {
 
 function geminiResponse() {
     return new Response(JSON.stringify({
-        candidates: [{ content: { parts: [{ text: JSON.stringify({ score: 22, alerts: [], recommendations: ['Revisar.'] }) }] } }]
+        candidates: [{ content: { parts: [{ text: JSON.stringify(require('./helpers/review-response')(22)) }] } }]
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 }
 

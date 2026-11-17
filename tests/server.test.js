@@ -11,7 +11,7 @@ test('health informa que Gemini no está configurado sin exponer secretos', asyn
     try {
         const response = await fetch(`http://127.0.0.1:${address.port}/api/health`);
         assert.equal(response.status, 200);
-        assert.deepEqual(await response.json(), { status: 'ok', gemini: false });
+        assert.deepEqual(await response.json(), { status: 'ok', gemini: false, geminiConfigured: false, connectivity: 'not_checked' });
     } finally {
         await new Promise(resolve => server.close(resolve));
         if (previousKey !== undefined) process.env.GEMINI_API_KEY = previousKey;

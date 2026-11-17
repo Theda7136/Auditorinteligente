@@ -1,0 +1,48 @@
+{
+  "version": "new-cases-1",
+  "labelStatus": "Etiquetas preliminares de negociación, fijadas antes de ejecutar; no validadas por abogados. Casos creados por el mismo asistente, no prueba ciega independiente.",
+  "cases": [
+    {
+      "id": "co-equilibrado",
+      "jurisdiction": "CO",
+      "party": "proveedor",
+      "expected": [],
+      "text": "CONTRATO FICTICIO DE SOPORTE\nPRIMERA. SERVICIO\nEl proveedor realizará mantenimiento de una plataforma durante seis meses. Los nuevos módulos requieren presupuesto y acuerdo escrito de ambas partes.\nSEGUNDA. PRECIO\nEl cliente pagará COP 18.000.000 en seis cuotas mensuales. Cada factura se paga en treinta días. Las observaciones deberán ser específicas y no suspenden el pago de importes no controvertidos.\nTERCERA. ACEPTACIÓN\nLos entregables se revisarán contra las pruebas acordadas en un anexo dentro de diez días hábiles. El proveedor corregirá los defectos atribuibles a su trabajo.\nCUARTA. RESPONSABILIDAD\nLa responsabilidad de ambas partes tendrá un límite recíproco equivalente al precio del contrato, salvo supuestos legalmente no limitables.\nQUINTA. SALIDA Y DATOS\nCualquiera de las partes puede terminar con treinta días de aviso y pago del trabajo ejecutado. Los datos se usarán solo para prestar el servicio y se devolverán o eliminarán al finalizar, salvo conservación legal documentada.\nSEXTA. CONTROVERSIAS\nLa ley aplicable será la colombiana y las controversias se someterán a los tribunales competentes de Bogotá."
+    },
+    {
+      "id": "mx-equilibrado-penalidad",
+      "jurisdiction": "MX",
+      "party": "proveedor",
+      "expected": [],
+      "text": "CONTRATO FICTICIO DE DISEÑO\nPRIMERA. OBJETO\nEl proveedor entregará tres propuestas de diseño y dos rondas de ajustes por MXN 60.000. Los cambios adicionales se cotizan por separado.\nSEGUNDA. PAGOS Y ENTREGAS\nEl cliente paga el cincuenta por ciento al inicio y el resto a la aceptación, mediante criterios objetivos, dentro de cinco días. El retraso del cliente en enviar materiales amplía el cronograma por igual duración.\nTERCERA. PENALIDAD\nLa cláusula penal es recíproca, del uno por ciento del importe de la prestación incumplida, por incumplimiento imputable demostrado, con tope total del cinco por ciento. No se acumula con indemnización por el mismo daño. Su aplicación queda sujeta al régimen legal que corresponda.\nCUARTA. DERECHOS\nEl cliente recibe licencia de uso de los diseños pagados. Las herramientas preexistentes siguen siendo del proveedor. La confidencialidad excluye información pública y dura dos años.\nQUINTA. SOLUCIÓN DE CONFLICTOS\nLas partes acudirán a los tribunales competentes de Ciudad de México y determinarán el régimen mexicano aplicable según la materia."
+    },
+    {
+      "id": "es-equilibrado-renovacion",
+      "jurisdiction": "ES",
+      "party": "cliente",
+      "expected": [],
+      "text": "CONTRATO FICTICIO DE MANTENIMIENTO\nPRIMERA. DURACIÓN\nEl servicio dura un año por EUR 4.800. Se pacta renovación automática por periodos anuales, con recordatorio cuarenta y cinco días antes. Cualquiera de las partes puede oponerse hasta quince días antes, sin penalización ni gastos.\nSEGUNDA. SOPORTE\nEl proveedor responderá a incidentes críticos en dos horas laborables. El plazo de resolución se acordará según severidad, complejidad y dependencias externas. Las mejoras funcionales requieren presupuesto aceptado.\nTERCERA. DATOS\nEl encargado tratará datos solo siguiendo instrucciones documentadas, con medidas de seguridad acordadas, notificación de incidentes y supresión al terminar conforme al anexo de tratamiento.\nCUARTA. CESIÓN\nAmbas partes necesitan consentimiento de la otra para ceder el contrato, que no se denegará sin motivo razonable.\nQUINTA. CONTROVERSIAS\nLa ley aplicable será la española y serán competentes los tribunales de Valencia."
+    },
+    {
+      "id": "co-riesgo-redaccion-distinta",
+      "jurisdiction": "CO",
+      "party": "proveedor",
+      "expected": ["subjective-acceptance", "unlimited-liability", "unilateral"],
+      "text": "CONTRATO FICTICIO DE CONSULTORÍA\nPRIMERA. OBJETO Y PRECIO\nLa firma consultora elaborará un diagnóstico operativo por COP 30.000.000, pagadero cuando la entidad compradora lo apruebe.\nSEGUNDA. APROBACIÓN\nLa entidad compradora decidirá cuándo considera satisfactorio el diagnóstico según su percepción personal. Podrá postergar esa decisión por el tiempo que estime conveniente y pedir nuevas versiones sin pagar honorarios adicionales.\nTERCERA. REPARACIÓN DE DAÑOS\nLa firma consultora indemnizará la totalidad de las pérdidas reclamadas por la compradora, sin techo económico, incluso por instrucciones incorrectas que esta haya impartido.\nCUARTA. FINALIZACIÓN\nLa compradora podrá poner fin a la relación en cualquier momento, sin expresar motivos ni reconocer los trabajos aún no aprobados. La consultora deberá continuar prestando sus servicios aunque haya facturas vencidas.\nQUINTA. LEY Y FORO\nSe aplica la ley colombiana y las controversias se resolverán en los tribunales competentes de Medellín."
+    },
+    {
+      "id": "mx-riesgo-propiedad-datos",
+      "jurisdiction": "MX",
+      "party": "proveedor",
+      "expected": ["ip-transfer", "personal-data"],
+      "text": "CONTRATO FICTICIO DE DESARROLLO\nPRIMERA. OBJETO\nEl proveedor desarrollará un portal por MXN 180.000. Las entregas se realizarán mensualmente y se pagarán en quince días contra aceptación por pruebas documentadas.\nSEGUNDA. TITULARIDAD\nToda tecnología que el proveedor hubiera creado antes de este encargo pasará a pertenecer exclusivamente al cliente cuando se incorpore al portal. Esta transferencia será gratuita y no dependerá del pago de las facturas. El proveedor perderá el derecho a utilizar sus propias bibliotecas en otros proyectos.\nTERCERA. INFORMACIÓN DE USUARIOS\nLos registros identificables de empleados y clientes podrán copiarse a terceros elegidos por el cliente para cualquier propósito futuro. No se establece una fecha para borrarlos ni se exige acordar medidas de protección con esos terceros.\nCUARTA. CONTROVERSIAS\nSe determinará la legislación mexicana aplicable según la materia y se acudirá a los tribunales competentes de Guadalajara."
+    },
+    {
+      "id": "es-riesgo-soporte-arbitraje",
+      "jurisdiction": "ES",
+      "party": "proveedor",
+      "expected": ["support-sla", "foreign-arbitration"],
+      "text": "CONTRATO FICTICIO DE SERVICIOS\nPRIMERA. SERVICIO\nEl proveedor mantendrá una aplicación por EUR 8.000 al año. Las facturas se abonan mensualmente en treinta días.\nSEGUNDA. DISPONIBILIDAD\nEl proveedor debe resolver todo incidente sin considerar la severidad en un máximo de sesenta minutos, a cualquier hora, aunque la solución dependa de servicios externos. El precio cubre también cualquier nueva funcionalidad solicitada durante dos años después de finalizar el servicio.\nTERCERA. CONTROVERSIAS\nEl arbitraje tendrá sede en Singapur y se tramitará en inglés. El proveedor adelantará la totalidad de los gastos y honorarios de los tres árbitros, con independencia de quién inicie el procedimiento. La ley aplicable será la española.\nCUARTA. DATOS\nLos datos personales solo se tratarán para ejecutar el servicio bajo instrucciones documentadas y se eliminarán al finalizar, salvo obligación legal identificada."
+    }
+  ]
+}

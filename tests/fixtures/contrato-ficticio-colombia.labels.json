@@ -1,0 +1,23 @@
+{
+  "status": "synthetic-developer-labels-not-lawyer-validated",
+  "origin": "New contract generated in this chat; not the historical PDF source contract. Formatting converted to plain text.",
+  "options": {"jurisdiction":"CO","party":"proveedor","contractType":"Servicios"},
+  "risks": [
+    {"id":"unilateral-renewal","clause":"SEGUNDA. PLAZO Y PRÓRROGA"},
+    {"id":"payment-withholding","clause":"TERCERA. PRECIO Y FORMA DE PAGO"},
+    {"id":"subjective-acceptance","clause":"CUARTA. ACEPTACIÓN DE ENTREGABLES"},
+    {"id":"scope-change","clause":"QUINTA. MODIFICACIONES DEL ALCANCE"},
+    {"id":"client-dependencies","clause":"SEXTA. OBLIGACIONES Y DEPENDENCIAS"},
+    {"id":"unlimited-liability","clause":"SÉPTIMA. RESPONSABILIDAD"},
+    {"id":"third-party-indemnity","clause":"OCTAVA. RECLAMACIONES DE TERCEROS"},
+    {"id":"ip-transfer","clause":"NOVENA. PROPIEDAD INTELECTUAL"},
+    {"id":"unilateral","clause":"DÉCIMA. TERMINACIÓN ANTICIPADA Y SUSPENSIÓN"},
+    {"id":"penalty","clause":"DÉCIMA PRIMERA. CLÁUSULA PENAL"},
+    {"id":"indefinite","clause":"DÉCIMA SEGUNDA. CONFIDENCIALIDAD"},
+    {"id":"personal-data","clause":"DÉCIMA TERCERA. DATOS PERSONALES Y SEGURIDAD"},
+    {"id":"noncompete","clause":"DÉCIMA CUARTA. EXCLUSIVIDAD Y NO COMPETENCIA"},
+    {"id":"support-sla","clause":"DÉCIMA QUINTA. SOPORTE Y GARANTÍA"},
+    {"id":"asymmetric-assignment","clause":"DÉCIMA SEXTA. CESIÓN Y SUBCONTRATACIÓN"},
+    {"id":"foreign-arbitration","clause":"DÉCIMA SÉPTIMA. LEY APLICABLE Y SOLUCIÓN DE CONTROVERSIAS"}
+  ]
+}

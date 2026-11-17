@@ -1,0 +1,115 @@
+CONTRATO FICTICIO DE PRESTACIÓN DE SERVICIOS TECNOLÓGICOS
+Documento de prueba — sin efectos contractuales
+
+Entre EMPRESA CONTRATANTE DEMO S.A.S., representada por Persona Ficticia A, denominada en adelante EL CONTRATANTE, y PROVEEDOR TECNOLÓGICO DEMO S.A.S., representado por Persona Ficticia B, denominado en adelante EL CONTRATISTA, se celebra el siguiente contrato ficticio.
+Todos los nombres, valores y circunstancias de este documento son inventados.
+
+PRIMERA. OBJETO
+EL CONTRATISTA desarrollará e implementará una aplicación web para la recepción de documentos, administración de usuarios, consulta de registros y generación de reportes de EL CONTRATANTE.
+El servicio comprenderá levantamiento de requerimientos, diseño, programación, pruebas, instalación, capacitación y soporte. Los entregables iniciales serán:
+1. Documento de requerimientos y propuesta de diseño.
+2. Versión funcional con autenticación, carga de documentos y consulta de registros.
+3. Versión final con reportes, manual de usuario y capacitación.
+
+SEGUNDA. PLAZO Y PRÓRROGA
+El plazo inicial será de seis (6) meses, contados a partir del 16 de noviembre de 2026.
+EL CONTRATANTE podrá prorrogar unilateralmente el plazo hasta por seis (6) meses adicionales mediante comunicación escrita enviada con cinco (5) días calendario de anticipación al vencimiento.
+Durante la prórroga, EL CONTRATISTA deberá mantener disponibles al equipo y la infraestructura necesarios, sin incremento del precio ni remuneración adicional.
+
+TERCERA. PRECIO Y FORMA DE PAGO
+El precio total será de CIENTO VEINTE MILLONES DE PESOS COLOMBIANOS (COP $120.000.000), incluidos los costos y gastos necesarios para ejecutar el objeto.
+El precio se pagará así:
+1. Veinte por ciento (20 %) después de la aceptación del documento de requerimientos.
+2. Treinta por ciento (30 %) después de la aceptación de la versión funcional.
+3. Cincuenta por ciento (50 %) después de la aceptación final de todos los servicios.
+Cada pago se realizará dentro de los noventa (90) días calendario siguientes a la aceptación y recepción de la factura correspondiente.
+EL CONTRATANTE podrá retener pagos a su sola discreción mientras considere que existe alguna inconformidad, incluso si esta no se encuentra relacionada con el entregable facturado. La retención podrá extenderse sin plazo máximo y no generará intereses ni compensación.
+
+CUARTA. ACEPTACIÓN DE ENTREGABLES
+EL CONTRATANTE determinará, a su exclusivo criterio, si los entregables satisfacen sus expectativas comerciales y operativas.
+No existirá un plazo máximo para formular observaciones, aprobar o rechazar un entregable. El silencio, la instalación, el uso productivo o el aprovechamiento de los resultados no constituirán aceptación.
+EL CONTRATISTA realizará todas las correcciones solicitadas hasta obtener aprobación expresa, sin límite de rondas de revisión y sin remuneración adicional.
+
+QUINTA. MODIFICACIONES DEL ALCANCE
+EL CONTRATANTE podrá modificar el alcance de los servicios sin ajuste del precio ni ampliación de los plazos.
+Las modificaciones podrán incluir nuevas funcionalidades, integraciones, migraciones de información o sustitución de tecnologías, aunque no estuvieran previstas al momento de celebrar el contrato.
+EL CONTRATISTA deberá iniciar su ejecución dentro de los dos (2) días hábiles siguientes a la solicitud. La falta de acuerdo sobre esfuerzo, costo o viabilidad no autorizará a suspenderla.
+
+SEXTA. OBLIGACIONES Y DEPENDENCIAS
+EL CONTRATISTA deberá disponer del personal necesario, ejecutar las actividades con diligencia y entregar los componentes y documentos previstos en este contrato.
+EL CONTRATANTE facilitará los accesos, credenciales, datos y decisiones que sean necesarios para la ejecución.
+Sin embargo, cualquier demora, error u omisión de EL CONTRATANTE en el suministro de esos elementos será asumida por EL CONTRATISTA y no dará derecho a ampliar los plazos, modificar el precio ni excluir penalidades.
+
+SÉPTIMA. RESPONSABILIDAD
+La responsabilidad de EL CONTRATISTA será ilimitada.
+EL CONTRATISTA responderá por daños directos, indirectos, lucro cesante, pérdida de oportunidades comerciales y reclamaciones de terceros relacionadas con el proyecto, aun cuando se originen en instrucciones, datos o decisiones suministrados por EL CONTRATANTE.
+La responsabilidad total de EL CONTRATANTE, por cualquier concepto, estará limitada al uno por ciento (1 %) de las sumas efectivamente pagadas.
+
+OCTAVA. RECLAMACIONES DE TERCEROS
+EL CONTRATISTA asumirá la defensa y el pago de toda reclamación de terceros que EL CONTRATANTE considere relacionada con los servicios, sin necesidad de una decisión que determine responsabilidad.
+EL CONTRATANTE podrá reconocer obligaciones o celebrar acuerdos con terceros sin autorización de EL CONTRATISTA y exigirle posteriormente el reembolso completo.
+EL CONTRATISTA pagará esos valores dentro de los cinco (5) días hábiles siguientes al requerimiento, aunque controvierta su procedencia.
+
+NOVENA. PROPIEDAD INTELECTUAL
+EL CONTRATISTA cede todos los derechos patrimoniales sobre los desarrollos, documentos y demás resultados del proyecto a favor de EL CONTRATANTE, con carácter exclusivo, irrevocable y para todos los territorios.
+La cesión comprenderá también herramientas, bibliotecas, plantillas, métodos y componentes preexistentes de EL CONTRATISTA que sean utilizados durante la ejecución, aunque hubieran sido desarrollados antes de este contrato.
+La cesión operará desde la creación o incorporación de cada elemento, independientemente de que EL CONTRATANTE haya pagado su precio. EL CONTRATISTA no podrá reutilizar esos elementos en otros proyectos.
+
+DÉCIMA. TERMINACIÓN ANTICIPADA Y SUSPENSIÓN
+EL CONTRATANTE podrá terminar unilateralmente el contrato sin causa mediante aviso escrito enviado con dos (2) días calendario de anticipación.
+En ese evento, pagará únicamente los entregables que hubiera aceptado expresamente antes del aviso. No reconocerá actividades en curso, costos comprometidos, licencias adquiridas ni gastos de desmovilización.
+EL CONTRATISTA no podrá terminar anticipadamente ni suspender los servicios, aunque existan pagos vencidos o incumplimientos atribuibles a EL CONTRATANTE.
+
+DÉCIMA PRIMERA. CLÁUSULA PENAL
+En caso de retraso en cualquiera de las entregas previstas, EL CONTRATISTA pagará una penalidad equivalente al dos por ciento (2 %) del valor total del contrato por cada día calendario de retraso.
+La penalidad no tendrá límite acumulado y se aplicará incluso cuando el retraso se relacione con la falta de accesos, información o decisiones de EL CONTRATANTE.
+EL CONTRATANTE podrá descontarla directamente de cualquier pago y exigir simultáneamente el cumplimiento, la indemnización de los perjuicios que reclame y el reembolso de los gastos asociados.
+
+DÉCIMA SEGUNDA. CONFIDENCIALIDAD
+EL CONTRATISTA mantendrá en reserva toda información técnica, comercial, financiera o administrativa a la que tenga acceso.
+Esta obligación tendrá una duración indefinida y comprenderá incluso información que posteriormente se haga pública por medios ajenos a EL CONTRATISTA, información conocida previamente por este o desarrollada de forma independiente.
+EL CONTRATISTA no podrá revelar información ante requerimientos de autoridades sin autorización previa y escrita de EL CONTRATANTE.
+
+DÉCIMA TERCERA. DATOS PERSONALES Y SEGURIDAD
+EL CONTRATISTA podrá recibir datos de identificación, contacto, actividad laboral y uso de la plataforma correspondientes a empleados y clientes de EL CONTRATANTE.
+EL CONTRATANTE podrá ordenar que esos datos se copien a cualquier servicio externo que designe, dentro o fuera de Colombia, sin que sea necesario acordar previamente finalidades, destinatarios, períodos de conservación o medidas de seguridad específicas.
+EL CONTRATISTA conservará copias de los datos por tiempo indefinido después de terminar el contrato y asumirá toda reclamación relacionada con su tratamiento, incluso cuando haya seguido instrucciones documentadas de EL CONTRATANTE.
+
+DÉCIMA CUARTA. EXCLUSIVIDAD Y NO COMPETENCIA
+Durante el contrato y por cinco (5) años después de su terminación, EL CONTRATISTA no podrá prestar servicios tecnológicos a empresas que desarrollen actividades semejantes a las de EL CONTRATANTE.
+Esta restricción se aplicará en cualquier país y comprenderá clientes actuales o futuros de EL CONTRATISTA, aunque los servicios no utilicen información ni resultados de este proyecto.
+EL CONTRATANTE no pagará compensación adicional por la restricción.
+
+DÉCIMA QUINTA. SOPORTE Y GARANTÍA
+EL CONTRATISTA prestará soporte las veinticuatro (24) horas del día, todos los días, durante la ejecución y por veinticuatro (24) meses después de la aceptación final.
+Deberá resolver cualquier incidente dentro de las dos (2) horas siguientes a su comunicación, con independencia de su complejidad o de la intervención de terceros.
+El soporte incluirá nuevas funcionalidades y adaptaciones solicitadas por EL CONTRATANTE, sin pago adicional. No existirán exclusiones por modificaciones realizadas por terceros.
+
+DÉCIMA SEXTA. CESIÓN Y SUBCONTRATACIÓN
+EL CONTRATANTE podrá ceder el contrato a cualquier tercero mediante simple aviso, sin autorización de EL CONTRATISTA.
+EL CONTRATISTA no podrá ceder el contrato ni subcontratar actividades sin autorización escrita de EL CONTRATANTE. Esa autorización podrá revocarse en cualquier momento y sin reconocimiento de los costos derivados.
+
+DÉCIMA SÉPTIMA. LEY APLICABLE Y SOLUCIÓN DE CONTROVERSIAS
+Las partes establecen como ley aplicable la de la República de Colombia.
+Toda controversia será sometida exclusivamente a arbitraje con sede en Madrid, España, en idioma inglés y ante tres árbitros.
+EL CONTRATISTA anticipará la totalidad de los honorarios arbitrales y gastos administrativos, sin perjuicio de la distribución que pudiera establecerse al finalizar el procedimiento.
+
+DÉCIMA OCTAVA. COMUNICACIONES E INTEGRIDAD
+Las comunicaciones se enviarán a las siguientes direcciones ficticias:
+EL CONTRATANTE: contratante@example.com
+EL CONTRATISTA: contratista@example.com
+Los mensajes se entenderán recibidos en la fecha de envío, aunque no exista confirmación de entrega.
+Este documento contiene el acuerdo completo. Las modificaciones deberán constar por escrito, sin perjuicio de las facultades unilaterales expresamente otorgadas a EL CONTRATANTE.
+Para efectos exclusivos de esta prueba, se indica como fecha de celebración el 10 de noviembre de 2026, en Bogotá, Colombia.
+
+EL CONTRATANTE
+EMPRESA CONTRATANTE DEMO S.A.S.
+Persona Ficticia A
+Firma: ____________________
+
+EL CONTRATISTA
+PROVEEDOR TECNOLÓGICO DEMO S.A.S.
+Persona Ficticia B
+Firma: ____________________
+
+FIN DEL DOCUMENTO FICTICIO DE PRUEBA

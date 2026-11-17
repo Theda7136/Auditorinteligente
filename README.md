@@ -2,6 +2,18 @@
 
 Aplicación web para revisar riesgos contractuales y preparar negociaciones. El análisis puede ejecutarse con reglas locales o con Gemini. No sustituye el criterio de un abogado.
 
+## Estado de la auditoría
+
+La versión auditada incorpora el motor local `audit-v4`, la revisión estructurada de Gemini `gemini-review-v5` y la interfaz `ui-v6`. La interfaz muestra el motor efectivo, modelo, versión, identificador, hash de entrada y estado del checklist; el fallback local queda identificado y no se presenta como Gemini. Los recursos estáticos se sirven con invalidación de caché y `no-store`.
+
+La suite automatizada actual pasa **110/110 pruebas**. En el contrato ficticio completo de regresión, Gemini produjo 16 alertas sobre 19 unidades y 17 categorías, con citas validadas literalmente dentro de su unidad. Estos datos son evidencia de regresión, no certificación jurídica ni garantía de cobertura completa.
+
+Se evaluaron además seis casos reproducibles de Colombia, México y España, con etiquetas preliminares no validadas por abogados y sin prueba ciega. Los resultados completos se conservan en `tests/fixtures/evaluacion-nueva.json` y se generan con `node scripts/evaluate-new-cases.js`. En esa muestra, el motor local obtuvo precisión 40,00 %, recall 28,57 % y F1 33,33 %; Gemini obtuvo precisión 63,64 %, recall 100 % y F1 77,78 %. La muestra es pequeña y sesgada: no debe interpretarse como exactitud de producción.
+
+Gemini puede responder `503 UNAVAILABLE` o producir respuestas incompletas; el servidor registra la causa, valida estructura y citas, y solo usa el fallback cuando corresponde. El indicador de salud no equivale a una prueba de análisis exitoso. Antes de producción siguen pendientes un corpus ciego revisado por abogados, validación por jurisdicción y materia, repetición controlada de Gemini, y hacer que el servidor sea la autoridad del resultado persistido.
+
+El informe detallado y la evidencia de ejecución se encuentran en `outputs/AUDITORIA.md` dentro del paquete de auditoría, no en la base de datos de usuarios.
+
 ## Requisitos
 
 - Node.js **22.5 o superior** (se utiliza el módulo SQLite integrado `node:sqlite`).

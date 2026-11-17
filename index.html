@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisión de contratos</title>
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/app.css?v=ui-v6">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8p5o2ATD5ZLUQGFe8cTN5g8Y0cqXx6V6Jmt0MpFRQJvA4Bsk0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js" integrity="sha512-2BI6f/i3GcWAfYQLMDOJ6kd6u3oWRHyuNowAump5D8ZJPSxHI5CdIjy4JNrDMSJXpe5iVNQvmlLdOI1GDK3TUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -195,6 +195,10 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
                         </div>
                     </div>
                     <p id="contextLine" class="muted"></p>
+                    <details class="analysis-details">
+                        <summary>Motor, alcance y trazabilidad</summary>
+                        <div id="analysisDetailsText"></div>
+                    </details>
                     <p id="truncationNote" class="notice warn" hidden></p>
                     <div class="row">
                         <h3>Hallazgos</h3>
@@ -224,7 +228,7 @@ ENTRE [NOMBRE DE LA EMPRESA], en adelante "EL CLIENTE"; Y [NOMBRE DEL PROVEEDOR]
         </div>
     </dialog>
 
-    <script src="js/audit-engine.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/audit-engine.js?v=ui-v6"></script>
+    <script src="js/app.js?v=ui-v6"></script>
 </body>
 </html>
